@@ -1,0 +1,1059 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+-------------------------------------------------------------------------------
+--------------                       TABLES                        ------------
+-------------------------------------------------------------------------------
+-- CREATE CDSviewer
+if NOT exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewer]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+CREATE TABLE {databaseOwner}[{objectQualifier}CDSviewer] (
+	[ItemId] [int] IDENTITY (1, 1) NOT NULL ,
+	[PortalId] [int] NULL CONSTRAINT [DF_CDSviewer_PortalId]  DEFAULT ((-1)),
+	[ModuleId] [int] NULL CONSTRAINT [DF_CDSviewer_ModuleId]  DEFAULT ((-1)),
+	[TypeCode] [nvarchar](50) NULL ,
+	[XMLData] [xml] NULL ,
+	[GUIDKey] [nvarchar](250) NULL ,
+	[ModifiedDate] [datetime] NULL ,
+	[TextData] [nvarchar](MAX) NULL ,
+	[XrefItemId] [int] NULL ,
+	[ParentItemId] [int] NULL ,
+	[Lang] [nvarchar] (50) NULL ,
+	[UserId] [int] NOT NULL CONSTRAINT [DF_CDSviewer_UserId] DEFAULT ((-1)),
+	[SortOrder] [int] NULL CONSTRAINT [DF_CDSviewer_SortOrder]  DEFAULT ((-1)),	
+	CONSTRAINT [PK_CDSviewer] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemId]
+	)  ON [PRIMARY] 
+) ON [PRIMARY]
+
+-- Index CDSviewer
+ CREATE NONCLUSTERED INDEX IX_CDSviewerXref ON {databaseOwner}[{objectQualifier}CDSviewer] (  XrefItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ]  
+ CREATE NONCLUSTERED INDEX IX_CDSviewerDNN ON {databaseOwner}[{objectQualifier}CDSviewer] (  ModuleId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerParent ON {databaseOwner}[{objectQualifier}CDSviewer] (  ParentItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerPortal ON {databaseOwner}[{objectQualifier}CDSviewer] (  PortalId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerType ON {databaseOwner}[{objectQualifier}CDSviewer] (  TypeCode ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerUserId ON {databaseOwner}[{objectQualifier}CDSviewer] (  UserId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerLang ON {databaseOwner}[{objectQualifier}CDSviewer] (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerGuidKey ON {databaseOwner}[{objectQualifier}CDSviewer] (  GuidKey ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerSortOrder ON {databaseOwner}[{objectQualifier}CDSviewer] (  SortOrder ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+
+END
+
+GO
+
+-- CREATE CDSviewerTemp
+if NOT exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewerTemp]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+CREATE TABLE {databaseOwner}[{objectQualifier}CDSviewerTemp] (
+	[ItemId] [int] IDENTITY (1, 1) NOT NULL ,
+	[PortalId] [int] NULL CONSTRAINT [DF_CDSviewerTemp_PortalId]  DEFAULT ((-1)),
+	[ModuleId] [int] NULL CONSTRAINT [DF_CDSviewerTemp_ModuleId]  DEFAULT ((-1)),
+	[TypeCode] [nvarchar](50) NULL ,
+	[XMLData] [xml] NULL ,
+	[GUIDKey] [nvarchar](250) NULL ,
+	[ModifiedDate] [datetime] NULL ,
+	[TextData] [nvarchar](MAX) NULL ,
+	[XrefItemId] [int] NULL ,
+	[ParentItemId] [int] NULL ,
+	[Lang] [nvarchar] (50) NULL ,
+	[UserId] [int] NOT NULL CONSTRAINT [DF_CDSviewerTemp_UserId] DEFAULT ((-1)),
+	[SortOrder] [int] NULL CONSTRAINT [DF_CDSviewerTemp_SortOrder]  DEFAULT ((-1)),	
+	CONSTRAINT [PK_CDSviewerTemp] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemId]
+	)  ON [PRIMARY] 
+) ON [PRIMARY]
+
+-- Index CDSviewer
+ CREATE NONCLUSTERED INDEX IX_CDSviewerTempXref ON {databaseOwner}[{objectQualifier}CDSviewerTemp] (  XrefItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ]  
+ CREATE NONCLUSTERED INDEX IX_CDSviewerTempMod ON {databaseOwner}[{objectQualifier}CDSviewerTemp] (  ModuleId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerTempParent ON {databaseOwner}[{objectQualifier}CDSviewerTemp] (  ParentItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerTempPortal ON {databaseOwner}[{objectQualifier}CDSviewerTemp] (  PortalId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerTempType ON {databaseOwner}[{objectQualifier}CDSviewerTemp] (  TypeCode ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerTempUserId ON {databaseOwner}[{objectQualifier}CDSviewerTemp] (  UserId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerTempLang ON {databaseOwner}[{objectQualifier}CDSviewerTemp] (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerTempGuidKey ON {databaseOwner}[{objectQualifier}CDSviewerTemp] (  GuidKey ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_CDSviewerTempSortOrder ON {databaseOwner}[{objectQualifier}CDSviewerTemp] (  SortOrder ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+
+END
+
+GO
+
+
+-------------------------------------------------------------------------------
+--------------                       FUNCTIONS                     ------------
+------------------------------------------------------------------------
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewerLangMerge]') and OBJECTPROPERTY(id, N'IsScalarFunction') = 1)
+drop function {databaseOwner}[{objectQualifier}CDSviewerLangMerge]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}CDSviewerLangMerge](@xmllangdata AS XML,@xmlbasedata AS XML)
+RETURNS XML
+BEGIN
+
+DECLARE @rtndata AS XML
+
+IF NOT @xmlbasedata IS NULL
+BEGIN
+	IF NOT @xmllangdata IS NULL
+	BEGIN
+		SET @xmlbasedata.modify('insert <lang/> as last into /genxml[1]')
+		SET @xmlbasedata.modify('insert sql:variable("@xmllangdata") as last into /genxml[1]/lang[1]')
+	END
+	SET @rtndata = @xmlbasedata
+END
+ELSE
+BEGIN
+	-- is not a language record so just return the language data
+	SET @rtndata = ISNULL(@xmllangdata,'')
+END
+
+RETURN @rtndata
+
+END
+
+GO
+
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+-------------------------------------------------------------------------------
+--------------                       SPROCS                        ------------
+-------------------------------------------------------------------------------
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_CleanData]    Script Date: 14/06/2019 16:18:52 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewer_CleanData]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}CDSviewer_CleanData]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_CleanData]    Script Date: 14/06/2019 16:18:52 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE {databaseOwner}[{objectQualifier}CDSviewer_CleanData]
+@TableName nvarchar(100)
+AS
+begin
+
+ Declare @sql AS NVarchar(max)
+
+ set @TableName = '{databaseOwner}' + @TableName
+
+
+/***  Clean ALL data that is not linked to a module.  i.e. modules that have been deleted. **/
+set @sql = 'delete from ' + @TableName + ' where moduleid not in (select moduleid from {databaseOwner}Modules) and moduleid > 0 ' 
+	
+	exec sp_executesql  @sql
+end
+GO
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_DeleteAllData]    Script Date: 14/06/2019 16:18:52 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewer_DeleteAllData]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}CDSviewer_DeleteAllData]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_DeleteAllData]    Script Date: 14/06/2019 16:18:52 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE {databaseOwner}[{objectQualifier}CDSviewer_DeleteAllData]
+@TableName nvarchar(100)
+AS
+begin
+
+ Declare @sql AS NVarchar(max)
+
+ set @TableName = '{databaseOwner}' + @TableName
+
+
+/***  Clean ALL data that is not linked to a module.  i.e. modules that have been deleted. **/
+set @sql = 'delete from ' + @TableName 
+	
+	exec sp_executesql  @sql
+end
+GO
+
+
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_Delete]    Script Date: 15/06/2019 08:20:57 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewer_Delete]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}CDSviewer_Delete]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_Delete]    Script Date: 15/06/2019 08:20:57 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE   PROCEDURE {databaseOwner}[{objectQualifier}CDSviewer_Delete]
+@ItemID int,
+@TableName nvarchar(100)
+AS
+begin
+
+	if (@ItemId > 0)
+	begin
+
+	 Declare @sql AS NVarchar(max)
+	 Declare @ParamDefinition AS NVarchar(max) 
+
+	 set @TableName = '{databaseOwner}' + @TableName
+
+set @sql = '		DECLARE @DelItemId int	'
+set @sql += '	 Declare @TableName2 AS NVarchar(max) '
+
+set @sql += '		set @TableName2 =  replace(@TableName,''{databaseOwner}'','''') '
+
+		-- Delete all linked child records.
+set @sql += '		DECLARE delete_cursor CURSOR LOCAL FOR '
+
+set @sql += '		select ItemId from ' + @TableName + ' where ParentItemId = ' + CONVERT(nvarchar(20), @ItemId)
+set @sql += '		OPEN delete_cursor'
+set @sql += '		FETCH NEXT FROM delete_cursor INTO @DelItemId'
+set @sql += '		WHILE @@FETCH_STATUS = 0'
+set @sql += '		BEGIN'
+set @sql += '			EXEC {databaseOwner}[{objectQualifier}CDSviewer_Delete] @DelItemId, @TableName2 '
+set @sql += '			FETCH NEXT FROM delete_cursor INTO @DelItemId'
+set @sql += '		END'
+set @sql += '		CLOSE delete_cursor;'
+set @sql += '		DEALLOCATE delete_cursor;'
+		-- Delete all linked child records (xrefitemid).
+set @sql += '		DECLARE delete_cursor1 CURSOR LOCAL FOR '
+set @sql += '		select ItemId from ' + @TableName + ' where XrefItemId = ' + CONVERT(nvarchar(20), @ItemId)
+set @sql += '		OPEN delete_cursor1'
+set @sql += '		FETCH NEXT FROM delete_cursor1 INTO @DelItemId'
+set @sql += '		WHILE @@FETCH_STATUS = 0'
+set @sql += '		BEGIN'
+set @sql += '			EXEC {databaseOwner}[{objectQualifier}CDSviewer_Delete] @DelItemId, @TableName '
+set @sql += '			FETCH NEXT FROM delete_cursor1 INTO @DelItemId'
+set @sql += '		END'
+set @sql += '		CLOSE delete_cursor1;'
+set @sql += '		DEALLOCATE delete_cursor1;'
+set @sql += '		delete from ' + @TableName + ' where ItemId = ' + CONVERT(nvarchar(20), @ItemId)
+	
+
+		Set @ParamDefinition =      '@TableName nvarchar(100)'		
+		exec sp_executesql  @sql, @ParamDefinition, @TableName
+	end
+	
+end
+GO
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_Get]    Script Date: 19/06/2019 16:21:53 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewer_Get]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}CDSviewer_Get]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_Get]    Script Date: 19/06/2019 16:21:53 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE     PROCEDURE {databaseOwner}[{objectQualifier}CDSviewer_Get]
+@ItemID int,
+@Lang nvarchar(10),
+@TableName nvarchar(100)
+AS
+begin
+
+ Declare @sql AS NVarchar(max)
+
+ set @TableName = '{databaseOwner}' + @TableName
+
+set @sql = '	select '
+set @sql += '	R1.[ItemId] '
+set @sql += '	,R1.[PortalId] '
+set @sql += '	,R1.[ModuleId] '
+set @sql += '	,R1.[TypeCode] '
+
+-- Use Function to merge, so save langauge works correctly.
+set @sql += '	,{databaseOwner}[{objectQualifier}CDSviewerLangMerge](RLang1.[XMLData],R1.[XMLData]) as [XMLData] '				
+
+set @sql += '	,R1.[GUIDKey] '
+set @sql += '	,R1.[ModifiedDate] '
+set @sql += '	,R1.[TextData] '
+set @sql += '	,R1.[XrefItemId] '
+set @sql += '	,R1.[ParentItemId] '
+set @sql += '	,ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang]  '	 
+set @sql += '	,R1.[UserId] '
+set @sql += '	,R1.[SortOrder] '
+set @sql += '	from ' + @TableName + ' as R1 '
+
+set @sql += '	left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+
+set @sql += '	where R1.ItemId = ' + CONVERT(nvarchar(20), @ItemId)
+
+print @sql
+
+exec sp_executesql  @sql
+
+end
+GO
+
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_GetList]    Script Date: 14/06/2019 16:19:27 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewer_GetList]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}CDSviewer_GetList]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_GetList]    Script Date: 14/06/2019 16:19:27 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE    PROCEDURE {databaseOwner}[{objectQualifier}CDSviewer_GetList]
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@Filter nvarchar(max),
+@OrderBy nvarchar(500),
+@ReturnLimit int = 0,
+@pageNum int = 0,
+@PageSize int = 0,
+@RecordCount int = 0,
+@Lang nvarchar(50) = '',
+@TableName nvarchar(100)
+AS
+begin
+
+ set @TableName = '{databaseOwner}' + @TableName
+
+	SET NOCOUNT ON
+	 
+	if NOT(@Lang = '')
+	begin
+		SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}CDSviewerLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+	end
+
+------------------------------------------------------------------------------------
+--- Cursor for INDEX records.
+------------------------------------------------------------------------------------
+DECLARE @idxname nvarchar(250) = ''
+DECLARE @TCode nvarchar(250) = ''
+DECLARE @idxparentItemId int = 0
+DECLARE @systemlinkItemId int = 0
+DECLARE @JoinIndex nvarchar(max)
+
+select @systemlinkItemId = itemid from {databaseOwner}[{objectQualifier}CDSviewer] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
+
+--print '@systemlinkItemId: ' + convert(nvarchar(max),@systemlinkItemId)
+
+DECLARE idx_cursor CURSOR FOR 
+SELECT GUIDKey, ParentItemId, textdata
+FROM {databaseOwner}[{objectQualifier}CDSviewer]
+WHERE [TypeCode] like 'SYSTEMLINK%' and ParentItemId = @systemlinkItemId
+
+SET @JoinIndex = ''
+
+OPEN idx_cursor  
+FETCH NEXT FROM idx_cursor INTO @idxname, @idxparentItemId, @TCode
+
+WHILE @@FETCH_STATUS = 0  
+BEGIN  
+
+	if (CHARINDEX(@idxname, @Filter) > 0)
+	begin
+
+		set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [' + @idxname + '] on [' + @idxname + '].XrefItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
+
+	end
+
+	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId, @TCode
+END 
+
+if (CHARINDEX('CATXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [CATXREF] on [CATXREF].ParentItemId = R1.ItemId and [CATXREF].TypeCode =  ''CATXREF'' '
+end
+if (CHARINDEX('CASCADE', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [CASCADE] on [CASCADE].ParentItemId = R1.ItemId and [CASCADE].TypeCode =  ''CASCADE'' '
+end
+if (CHARINDEX('PROPXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [PROPXREF] on [PROPXREF].ParentItemId = R1.ItemId and [PROPXREF].TypeCode =  ''PROPXREF'' '
+end
+if (CHARINDEX('ATTRXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [ATTRXREF] on [ATTRXREF].ParentItemId = R1.ItemId and [ATTRXREF].TypeCode =  ''ATTRXREF'' '
+end
+
+
+
+
+CLOSE idx_cursor
+DEALLOCATE idx_cursor
+
+--print '@JoinIndex: ' + @JoinIndex
+
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+
+		IF (@PortalId  >= 0) BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or R1.PortalId = ''-1'') ' + @Filter
+		END 
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (R1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or R1.ModuleId = ''-1'') ' + @Filter
+		END 
+
+	 
+	 
+	 DECLARE
+		 @STMT nvarchar(max)         -- SQL to execute
+		,@rtnFields nvarchar(max)
+
+	IF (@PortalId >= 0) BEGIN
+
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or R1.PortalId = ''-1'') and (R1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or R1.ModuleId = ''-1'') ' + @Filter
+		END ELSE BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + '''  or R1.PortalId = ''-1'') ' + @Filter
+		END 
+
+	END 
+
+	if NOT(@Lang = '')
+	begin
+		SET @OrderBy = REPLACE(@OrderBy,'[XMLData]','ISNULL([RLangIdx].[XMLData], {databaseOwner}[{objectQualifier}CDSviewerLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+	end
+
+	set @rtnFields = ' R1.[ItemId] '
+
+	if NOT(@Lang = '')
+	begin
+		set @rtnFields = @rtnFields + ',ISNULL([RLangIdx].[XMLData], {databaseOwner}[{objectQualifier}CDSviewerLangMerge](RLang1.[XMLData],R1.[XMLData])) as [XMLData] '				
+		set @rtnFields = @rtnFields + ',ISNULL(RLang1.[Lang],ISNULL(R1.[Lang],'''')) as [Lang] '	 
+	end
+	if @Lang = ''
+	begin
+		set @rtnFields = @rtnFields + ',R1.[XMLData] '
+		set @rtnFields = @rtnFields + ',R1.[Lang] as [Lang] '	 
+	end
+	
+	set @rtnFields = @rtnFields + ',R1.[PortalId] '
+	set @rtnFields = @rtnFields + ',R1.[ModuleId] '
+	set @rtnFields = @rtnFields + ',R1.[TypeCode] '
+	set @rtnFields = @rtnFields + ',R1.[GUIDKey] '
+	set @rtnFields = @rtnFields + ',R1.[ModifiedDate] '
+	set @rtnFields = @rtnFields + ',R1.[TextData] '
+	set @rtnFields = @rtnFields + ',R1.[XrefItemId] '
+	set @rtnFields = @rtnFields + ',R1.[ParentItemId] '
+	set @rtnFields = @rtnFields + ',R1.[UserId] '
+	set @rtnFields = @rtnFields + ',R1.[SortOrder] '		
+
+	IF (@PageSize > 0)
+	BEGIN
+			-- Do Paging
+		SET @STMT = 'DECLARE @recct int '
+		set @STMT = @STMT + ' SET @recct = ' + Convert(nvarchar(5),@RecordCount) 
+		
+		set @STMT = @STMT + '   DECLARE @lbound int, @ubound int '
+
+		SET @pageNum = ABS(@pageNum)
+		SET @pageSize = ABS(@pageSize)
+		IF @pageNum < 1 SET @pageNum = 1
+		IF @pageSize < 1 SET @pageSize = 1
+
+		set @STMT = @STMT + ' SET @lbound = ' + convert(nvarchar(50),((@pageNum - 1) * @pageSize))
+		set @STMT = @STMT + ' SET @ubound = @lbound + ' + convert(nvarchar(50),(@pageSize + 1))
+		set @STMT = @STMT + ' IF @lbound >= @recct BEGIN '
+		set @STMT = @STMT + '   SET @ubound = @recct + 1 '
+		set @STMT = @STMT + '   SET @lbound = @ubound - (' + convert(nvarchar(50),(@pageSize + 1)) + ') ' -- return the last page of records if no records would be on the specified page '
+		set @STMT = @STMT + ' END '
+		
+		-- Default order by clause
+		if @OrderBy = '' 
+		Begin
+			set @OrderBy = ' ORDER BY R1.ModifiedDate DESC '
+		End
+		
+		set @STMT = @STMT + ' SELECT '
+		if @ReturnLimit > 0 
+		begin
+			set @STMT = @STMT + ' top ' + convert(nvarchar(10),@ReturnLimit)
+		end
+		
+		set @STMT = @STMT + @rtnFields		
+
+		set @STMT = @STMT + ' FROM    (
+								SELECT  ROW_NUMBER() OVER(' + @orderBy + ') AS row, '
+		set @STMT = @STMT + @rtnFields		
+		set @STMT = @STMT + ' FROM ' + @TableName + '  as R1 '
+
+		if NOT(@Lang = '')
+		begin
+			set @STMT = @STMT + ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+			set @STMT = @STMT + ' left join ' + @TableName + ' as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+		end
+		
+		set @STMT = @STMT + @JoinIndex
+
+				IF (RIGHT(@TypeCode,1) = '%')
+			BEGIN
+				set @STMT = @STMT + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+			END ELSE
+			BEGIN
+				IF (@TypeCode = '')
+				BEGIN
+					set @STMT = @STMT + 'WHERE R1.TypeCode != ''''' + @Filter  
+				END ELSE
+				BEGIN
+					set @STMT = @STMT + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+				END
+			END	                                                              
+			
+			set @STMT = @STMT + ' ) AS R1 '
+
+			if NOT(@Lang = '')
+			begin
+				set @STMT = @STMT + ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+				set @STMT = @STMT + ' left join ' + @TableName + ' as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+			end
+
+			set @STMT = @STMT + ' WHERE row > @lbound AND row < @ubound '
+
+			
+	END ELSE
+	BEGIN
+		-- DO NON-PAGING
+
+		set @STMT = ' SELECT '
+		if @ReturnLimit > 0 
+		begin
+			set @STMT = @STMT + ' top ' + convert(nvarchar(10),@ReturnLimit)
+		end
+		
+		set @STMT = @STMT + @rtnFields		
+
+		set @STMT = @STMT + ' FROM ' + @TableName + '  as R1 '
+
+		if NOT(@Lang = '')
+		begin
+			set @STMT = @STMT + ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+			set @STMT = @STMT + ' left join ' + @TableName + ' as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+		end
+		
+		set @STMT = @STMT + @JoinIndex
+
+		IF (RIGHT(@TypeCode,1) = '%')
+		BEGIN
+			set @STMT = @STMT + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+		END ELSE
+		BEGIN
+			IF (@TypeCode = '')
+			BEGIN
+				set @STMT = @STMT + 'WHERE R1.TypeCode != '''' ' + @Filter  
+			END ELSE
+			BEGIN
+				set @STMT = @STMT + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+			END
+		END	                                                              	
+
+		set @STMT = @STMT + ' ' + @OrderBy                                                           	
+
+	END		
+
+
+
+	EXEC sp_executeSQL @STMT                 -- return requested records
+
+end
+GO
+
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_GetListCount]    Script Date: 14/06/2019 16:20:12 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewer_GetListCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}CDSviewer_GetListCount]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_GetListCount]    Script Date: 14/06/2019 16:20:12 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE    PROCEDURE {databaseOwner}[{objectQualifier}CDSviewer_GetListCount] 
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@Filter nvarchar(max),
+@Lang nvarchar(50),
+@RecordCount int OUTPUT,
+@TableName nvarchar(100)
+AS
+begin
+
+ set @TableName = '{databaseOwner}' + @TableName
+
+ 	if NOT(@Lang = '')
+	begin
+		SET @Filter = REPLACE(@Filter,'[XMLData]','ISNULL([RLangIdx].[XMLData],{databaseOwner}[{objectQualifier}CDSviewerLangMerge](RLang1.[XMLData],R1.[XMLData]))')
+	end
+
+------------------------------------------------------------------------------------
+--- Cursor for INDEX records.
+------------------------------------------------------------------------------------
+DECLARE @idxname nvarchar(250) = ''
+DECLARE @TCode nvarchar(250) = ''
+DECLARE @idxparentItemId int = 0
+DECLARE @systemlinkItemId int = 0
+DECLARE @JoinIndex nvarchar(max)
+
+select @systemlinkItemId = itemid from {databaseOwner}[{objectQualifier}CDSviewer] where [TypeCode] = 'SYSTEMLINK' and GUIDkey = @TypeCode 
+
+--print '@systemlinkItemId: ' + convert(nvarchar(max),@systemlinkItemId)
+
+DECLARE idx_cursor CURSOR FOR 
+SELECT GUIDKey, ParentItemId, textdata
+FROM {databaseOwner}[{objectQualifier}CDSviewer]
+WHERE [TypeCode] like 'SYSTEMLINK%' and ParentItemId = @systemlinkItemId
+
+SET @JoinIndex = ''
+
+OPEN idx_cursor  
+FETCH NEXT FROM idx_cursor INTO @idxname, @idxparentItemId, @TCode
+
+WHILE @@FETCH_STATUS = 0  
+BEGIN  
+
+	if (CHARINDEX(@idxname, @Filter) > 0)
+	begin
+
+		set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [' + @idxname + '] on [' + @idxname + '].XrefItemId = R1.ItemId and [' + @idxname + '].TypeCode = ''IDX_' + @idxname + ''' and ([' + @idxname + '].[Lang] = ''' + @Lang + ''' or [' + @idxname + '].[Lang] = '''') '
+
+	end
+
+	FETCH NEXT FROM idx_cursor INTO @idxname,@idxparentItemId, @TCode
+END 
+
+if (CHARINDEX('CATXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [CATXREF] on [CATXREF].ParentItemId = R1.ItemId and [CATXREF].TypeCode =  ''CATXREF'' '
+end
+if (CHARINDEX('CASCADE', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [CASCADE] on [CASCADE].ParentItemId = R1.ItemId and [CASCADE].TypeCode =  ''CASCADE'' '
+end
+if (CHARINDEX('PROPXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [PROPXREF] on [PROPXREF].ParentItemId = R1.ItemId and [PROPXREF].TypeCode =  ''PROPXREF'' '
+end
+if (CHARINDEX('ATTRXREF', @Filter) > 0)
+begin
+	set @JoinIndex = @JoinIndex + ' left join ' + @TableName + ' as [ATTRXREF] on [ATTRXREF].ParentItemId = R1.ItemId and [ATTRXREF].TypeCode =  ''ATTRXREF'' '
+end
+
+
+CLOSE idx_cursor
+DEALLOCATE idx_cursor
+
+--print '@JoinIndex: ' + @JoinIndex
+
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+
+		IF (@PortalId  >= 0) BEGIN
+			SET @Filter = ' and (R1.PortalId = '''  + Convert(nvarchar(10),@PortalId) + ''' or R1.PortalId = ''-1'') ' + @Filter
+		END 
+		IF (@ModuleId >= 0) BEGIN
+			SET @Filter = ' and (R1.ModuleId = ''' + Convert(nvarchar(10),@ModuleId) + ''' or R1.ModuleId = ''-1'') ' + @Filter
+		END 
+
+	--DECLARE @RecordCount int
+	DECLARE @countselect nvarchar(max)
+
+			set @countselect = ' SELECT '
+	
+			set @countselect = @countselect + ' @RecordCount=count(R1.ItemId) '	
+
+			set @countselect = @countselect + ' FROM ' + @TableName + '  as R1 '
+
+			if NOT(@Lang = '')
+			begin
+				set @countselect = @countselect + ' left join ' + @TableName + ' as RLang1 on RLang1.ParentItemId = R1.ItemId and RLang1.[Lang] = ''' + @Lang + '''  and RLang1.TypeCode =  R1.TypeCode + ''LANG'' ' 
+				set @countselect = @countselect + ' left join ' + @TableName + ' as [RLangIdx] on [RLangIdx].ParentItemId = R1.ItemId and [RLangIdx].[Lang] = ''' + @Lang + '''  and [RLangIdx].TypeCode =  R1.TypeCode + ''LANGIDX'' ' 
+			end
+	
+			set @countselect = @countselect + @JoinIndex
+
+			IF (RIGHT(@TypeCode,1) = '%')
+			BEGIN
+				set @countselect = @countselect + 'WHERE R1.TypeCode Like ''' + @TypeCode + ''' ' + @Filter  
+			END ELSE
+			BEGIN
+				IF (@TypeCode = '')
+				BEGIN
+					set @countselect = @countselect + 'WHERE R1.TypeCode != ''''' + @Filter  
+				END ELSE
+				BEGIN
+					set @countselect = @countselect + 'WHERE R1.TypeCode = ''' + @TypeCode + ''' ' + @Filter  
+				END
+			END	                                                              	
+
+		exec sp_executesql @countselect, N'@RecordCount int output', @RecordCount output;
+
+		SELECT @RecordCount AS RecordCount       -- return the total # of records
+
+END
+GO
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_GetRecord]    Script Date: 14/06/2019 16:20:22 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewer_GetRecord]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}CDSviewer_GetRecord]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_GetRecord]    Script Date: 14/06/2019 16:20:22 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE     PROCEDURE {databaseOwner}[{objectQualifier}CDSviewer_GetRecord]
+@ItemID int,
+@TableName nvarchar(100)
+AS
+begin
+
+ Declare @sql AS NVarchar(max)
+
+ set @TableName = '{databaseOwner}' + @TableName
+
+set @sql = '	select '
+set @sql += '	[ItemId] '
+set @sql += '	,[PortalId] '
+set @sql += '	,[ModuleId] '
+set @sql += '	,[TypeCode] '
+set @sql += '	,[XMLData] '
+set @sql += '	,[GUIDKey] '
+set @sql += '	,[ModifiedDate] '
+set @sql += '	,[TextData] '
+set @sql += '	,[XrefItemId] '
+set @sql += '	,[ParentItemId] '
+set @sql += '	,[Lang]  '
+set @sql += '	,[UserId] '
+set @sql += '	,[SortOrder] '
+set @sql += '	from ' + @TableName + ' as R1 '
+set @sql += '	where R1.ItemId = ' + CONVERT(nvarchar(20), @ItemId)
+
+exec sp_executesql  @sql
+
+end
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_GetRecordLang]    Script Date: 14/06/2019 16:20:33 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewer_GetRecordLang]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}CDSviewer_GetRecordLang]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_GetRecordLang]    Script Date: 14/06/2019 16:20:33 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE     PROCEDURE {databaseOwner}[{objectQualifier}CDSviewer_GetRecordLang]
+@ParentItemId int,
+@Lang nvarchar(10),
+@TableName nvarchar(100)
+AS
+begin
+
+
+ Declare @sql AS NVarchar(max)
+
+ set @TableName = '{databaseOwner}' + @TableName
+
+set @sql = '	select '
+set @sql += '	[ItemId] '
+set @sql += '	,[PortalId] '
+set @sql += '	,[ModuleId] '
+set @sql += '	,[TypeCode] '
+set @sql += '	,[XMLData] '
+set @sql += '	,[GUIDKey] '
+set @sql += '	,[ModifiedDate] '
+set @sql += '	,[TextData] '
+set @sql += '	,[XrefItemId] '
+set @sql += '	,[ParentItemId] '
+set @sql += '	,[Lang]  '
+set @sql += '	,[UserId] '
+set @sql += '	,[SortOrder] '
+set @sql += '	from ' + @TableName + ' as R1 '
+set @sql += '	where R1.ParentItemId = ' + CONVERT(nvarchar(20), @ParentItemId) + ' and R1.Lang = ''' + @Lang + ''' ' 
+
+print @sql
+
+exec sp_executesql  @sql
+
+end
+GO
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_Update]    Script Date: 14/06/2019 16:20:44 ******/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewer_Update]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}CDSviewer_Update]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}CDSviewer_Update]    Script Date: 14/06/2019 16:20:44 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE {databaseOwner}[{objectQualifier}CDSviewer_Update]
+(
+@ItemId int,
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@XMLData xml,
+@GUIDKey nvarchar(250),
+@ModifiedDate datetime,
+@TextData nvarchar(MAX),
+@XrefItemId int,
+@ParentItemId int,
+@UserId int,
+@Lang nvarchar(10),
+@SortOrder int,
+@TableName nvarchar(100)
+)
+AS
+BEGIN
+
+ Declare @sql AS NVarchar(max)
+ Declare @ParamDefinition AS NVarchar(max) 
+
+ set @TableName = '{databaseOwner}' + @TableName
+
+set @sql = 'if not exists (select ItemID from ' + @TableName + ' where ItemID = @ItemID ) '
+set @sql += '	begin '
+set @sql += '		insert into ' + @TableName + ' '
+set @sql += '		( '
+set @sql += 'PortalId,  '
+set @sql += 'ModuleId, '
+set @sql += 'TypeCode, '
+set @sql += 'XMLData, '
+set @sql += 'GUIDKey, '
+set @sql += 'ModifiedDate, '
+set @sql += 'TextData, '
+set @sql += 'XrefItemId, '
+set @sql += 'ParentItemId, '
+set @sql += 'UserId, '
+set @sql += 'Lang, '
+set @sql += 'SortOrder '
+set @sql += '		) '
+set @sql += '		values '
+set @sql += '		( '
+set @sql += '@PortalId,  '
+set @sql += '@ModuleId, '
+set @sql += '@TypeCode, '
+set @sql += '@XMLData, '
+set @sql += '@GUIDKey, '
+set @sql += '@ModifiedDate, '
+set @sql += '@TextData, '
+set @sql += '@XrefItemId, '
+set @sql += '@ParentItemId, '
+set @sql += '@UserId, '
+set @sql += '@Lang, '
+set @sql += '@SortOrder '
+set @sql += '		) '
+set @sql += '		 '
+set @sql += '		set @ItemID = @@IDENTITY '
+set @sql += ' '
+set @sql += '	end '
+set @sql += '	else '
+set @sql += '	begin '
+set @sql += '		Update ' + @TableName + ' '
+set @sql += '		set  '
+set @sql += 'PortalId = @PortalId,  '
+set @sql += 'ModuleId = @ModuleId, '
+set @sql += 'TypeCode = @TypeCode, '
+set @sql += 'XMLData = @XMLData, '
+set @sql += 'GUIDKey = @GUIDKey, '
+set @sql += 'ModifiedDate = @ModifiedDate, '
+set @sql += 'TextData = @TextData, '
+set @sql += 'XrefItemId = @XrefItemId, '
+set @sql += 'ParentItemId = @ParentItemId, '
+set @sql += 'UserId = @UserId, '
+set @sql += 'Lang = @Lang, '
+set @sql += 'SortOrder = @SortOrder '
+set @sql += '		where ItemId = @ItemId '
+set @sql += '  '
+set @sql += '	end '	
+set @sql += '	select @ItemID '		
+
+	Set @ParamDefinition =      '@ItemId int OUTPUT,
+@PortalId int, 
+@ModuleId int,
+@TypeCode nvarchar(50),
+@XMLData xml,
+@GUIDKey nvarchar(250),
+@ModifiedDate datetime,
+@TextData nvarchar(MAX),
+@XrefItemId int,
+@ParentItemId int,
+@UserId int,
+@Lang nvarchar(10),
+@SortOrder int'
+
+ Execute sp_Executesql     @sql, 
+                @ParamDefinition, 
+@ItemId OUTPUT,
+@PortalId, 
+@ModuleId,
+@TypeCode,
+@XMLData,
+@GUIDKey,
+@ModifiedDate,
+@TextData,
+@XrefItemId,
+@ParentItemId,
+@UserId,
+@Lang,
+@SortOrder
+
+select @ItemId
+END
+GO
+
+
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewer_GetDNNUsers]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}CDSviewer_GetDNNUsers]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CDSviewer_GetDNNUsers]
+@PortalId int, 
+@FilterText nvarchar(max),
+@ReturnLimit int = 0,
+@pageNum int = 0,
+@PageSize int = 0,
+@RecordCount int = 0
+AS
+begin
+
+		DECLARE @recct int 
+		SET @recct = @RecordCount
+		
+		DECLARE @lbound int, @ubound int;
+
+		SET @pageNum = ABS(@pageNum);
+		SET @pageSize = ABS(@pageSize);
+		IF @pageNum < 1 SET @pageNum = 1;
+		IF @pageSize < 1 SET @pageSize = 1;
+
+		SET @lbound = ((@pageNum - 1) * @pageSize);;
+		SET @ubound = @lbound + (@pageSize + 1);
+		IF @lbound >= @recct BEGIN 
+		   SET @ubound = @recct + 1 ;
+		   SET @lbound = @ubound - (@pageSize + 1);  -- return the last page of records if no records would be on the specified page '
+		END ;
+
+
+		with [UsersBy] as (
+			SELECT 
+			U.UserId as ItemId,
+			U.PortalId,
+			'<genxml><textbox>' +
+			'<username>' + U.Username + '</username>' +
+			'<firstname>' + U.FirstName   + '</firstname>' +
+			'<lastname>' + U.LastName  + '</lastname>' +
+			'<displayname>' + U.DisplayName  + '</displayname>' +
+			'<email>' + U.Email  + '</email>' +
+			'<authorised>' + convert(nvarchar(1),U.Authorised)  + '</authorised>' +
+			'<updatepassword>' + convert(nvarchar(1),U.UpdatePassword)  + '</updatepassword>' +
+			'<isdeleted>' + convert(nvarchar(1),U.IsDeleted)  + '</isdeleted>' +
+			'</textbox></genxml>' as XMLData,
+					
+			ROW_NUMBER() OVER (ORDER BY Email ASC) AS ROWID
+				FROM    {databaseOwner}{objectQualifier}vw_Users U
+				WHERE U.PortalId = @PortalId 
+					AND (LOWER(U.Username) LIKE LOWER(@FilterText) 
+					OR LOWER(U.FirstName) LIKE LOWER(@FilterText) 
+					OR LOWER(U.LastName) LIKE LOWER(@FilterText) 
+					OR LOWER(U.DisplayName) LIKE LOWER(@FilterText) 
+					OR LOWER(U.Email) LIKE LOWER(@FilterText))
+		)
+		select ItemId,PortalId,XMLData  
+			from [UsersBy]
+			where ROWID > @lbound AND ROWID < @ubound 
+
+
+
+end
+
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CDSviewer_GetDNNUsersCount]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}[{objectQualifier}CDSviewer_GetDNNUsersCount]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CDSviewer_GetDNNUsersCount]
+@PortalId int, 
+@FilterText nvarchar(max)
+AS
+begin
+
+	SELECT count(U.UserId)
+	FROM    {databaseOwner}{objectQualifier}vw_Users U
+	WHERE U.PortalId = @PortalId 
+			AND (LOWER(U.Username) LIKE LOWER(@FilterText) 
+			OR LOWER(U.FirstName) LIKE LOWER(@FilterText) 
+			OR LOWER(U.LastName) LIKE LOWER(@FilterText) 
+			OR LOWER(U.DisplayName) LIKE LOWER(@FilterText) 
+			OR LOWER(U.Email) LIKE LOWER(@FilterText))
+end
+
+
+GO
+
+
+
+

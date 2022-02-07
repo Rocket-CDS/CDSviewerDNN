@@ -1,0 +1,81 @@
+@inherits Simplisity.RazorEngineTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using CDSviewerDNN.Components
+
+@{
+    var serviceData = (ServiceLimpet)Model.List.First();
+    var remoteParams = (RemoteLimpet)Model.GetDataObject("remoteparams");
+    var idx = 0;
+}
+
+<div id="servicessection" class="w3-container">
+
+    <div class="w3-quarter w3-hide-small w3-hide-medium">&nbsp;</div>
+
+    <div class="w3-half">
+        <div class="w3-row w3-padding">
+            <div class="w3-half">
+                <label>Service Code</label>
+            </div>
+        </div>
+        <div class="w3-row w3-padding">
+            <div class="w3-col m11 w3-padding">
+                @TextArea(new SimplisityInfo(), "genxml/textbox/servicecode", " class='w3-input w3-border' style='height:45px;' ")
+            </div>
+            <div class="w3-col m1 w3-padding" style="max-width:60px;">
+                <div class="w3-button w3-teal simplisity_click" s-cmd="services_savedata" s-post="#servicessection" s-fields='{"tabid":"@(remoteParams.TabId)","moduleid":"@remoteParams.ModuleId"}' s-reload="true">
+                    <span class="material-icons">
+                        save
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-container w3-padding">
+
+            <table class="w3-table w3-bordered">
+                <tr>
+                    <th>Service</th>
+                    <th></th>
+                </tr>
+                @foreach (SimplisityRecord serviceRec in serviceData.GetServices())
+                {
+                    <tr>
+                        <td style="width:60px;">
+                            <span class="w3-button w3-right simplisity_click" s-cmd="services_selectservice" s-reload="true" s-fields='{"tabid":"@(remoteParams.TabId)","moduleid":"@remoteParams.ModuleId","servicecodeidx":"@(idx)"}'>
+                                @if (serviceRec.GetXmlProperty("genxml/config/serviceref") == remoteParams.ServiceRef)
+                                {
+                                    <span class="material-icons w3-text-green">check_circle_outline</span>
+                                }
+                                else
+                                {
+                                    <span class="material-icons">radio_button_unchecked</span>
+                                }
+                            </span>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            @serviceRec.GetXmlProperty("genxml/name")
+                        </td>
+                        <td style="width:60px;">
+                            <span class="w3-button w3-right simplisity_click" s-cmd="services_delete" s-reload="true" s-fields='{"tabid":"@(remoteParams.TabId)","moduleid":"@remoteParams.ModuleId","servicecodeidx":"@(idx)"}'>
+                                <span class="material-icons">
+                                    remove
+                                </span>
+                            </span>
+                        </td>
+                    </tr>
+                    idx += 1;
+                }
+            </table>
+
+        </div>
+    </div>
+
+    <div class="w3-quarter w3-hide-small w3-hide-medium">&nbsp;</div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+    });
+</script>
