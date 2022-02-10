@@ -11,9 +11,10 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.UserControls;
 using Simplisity;
-using ToastedMod.Components;
+using CDSviewerDNN.Components;
+using CDScomm;
 
-namespace ToastedMod
+namespace CDSviewerDNN
 {
     public partial class AppTheme : PortalModuleBase
     {
@@ -30,7 +31,7 @@ namespace ToastedMod
                 PageId = TabId;
 
                 //check if we have a skinsrc, if not add it and reload. NOTE: Where just asking for a infinate loop here, but DNN7.2 doesn't leave much option.
-                const string skinSrcAdmin = "?SkinSrc=%2fDesktopModules%2fToasted%2fToastedMod%2fSkins%2fToasted%2fToastedAdmin";
+                const string skinSrcAdmin = "?SkinSrc=%2fDesktopModules%2fCDSviewerDNN%2fSkins%2fCDSviewer%2fCDSviewerAdmin";
                 if (LocalUtils.RequestParam(Context, "SkinSrc") == "")
                 {
                     Response.Redirect(EditUrl("AppTheme") + skinSrcAdmin, false);
@@ -57,12 +58,21 @@ namespace ToastedMod
             LocalUtils.RemoveCache("editoption" + ModuleId);
 
             var strOut = "No Service";
-            if (LocalUtils.HasModuleEditRights(TabId, ModuleId))
+            var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
+            if (moduleData.Exists)
             {
-                var remoteParam = new RemoteLimpet(PortalId, TabId, ModuleId, false);
-                if (remoteParam.Exists && remoteParam.EngineURL != "")
+                var sessionJson = LocalUtils.GetCookieValue("simplisity_sessionparams");  // get session params from cookie, if it exists.
+                moduleData.LoadUrlParams(Request.QueryString);
+                moduleData.LoadPageUrl(TabId);
+                moduleData.LoadSessionParams(sessionJson);
+                if (moduleData.ServiceRef == "")
+                    strOut = "No Service";
+                else
                 {
-                    strOut = remoteParam.editAppThemeAPI();
+                    // Call to the CDS server.
+                    var comm = new CommLimpet(moduleData.Record);
+                    var commReturn = comm.CallRedirect("remote_edit", "", "");
+                    strOut = commReturn.ViewHtml;
                 }
             }
             return strOut;

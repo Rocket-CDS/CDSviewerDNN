@@ -24,15 +24,17 @@
     <value>\Installation\01.00.00.SqlDataProvider</value>
     <value>\Installation\Uninstall.SqlDataProvider</value>
     <value>CDSviewerDNN.dnn</value>
-    <value>\Skins\Toasted\CDSviewerEmpty.ascx</value>
-    <value>\Skins\Toasted\CDSviewerAdmin.ascx</value>
-    <value>\Skins\Toasted\CDSviewerTopBar.ascx</value>
-    <value>\Skins\Toasted\skin.doctype.xml</value>
+    <value>\Skins\CDSviewer\CDSviewerEmpty.ascx</value>
+    <value>\Skins\CDSviewer\CDSviewerAdmin.ascx</value>
+    <value>\Skins\CDSviewer\CDSviewerTopBar.ascx</value>
+    <value>\Skins\CDSviewer\skin.doctype.xml</value>
   </file>
   <assembly>
     <value>CDSviewerDNN.dll</value>
     <value>CDSviewerDNN.pdb</value>
     <value>Simplisity.dll</value>
     <value>RazorEngine.dll</value>
+    <value>CDScomm.dll</value>
+    <value>CDScomm.pdb</value>    
   </assembly>
 </root>

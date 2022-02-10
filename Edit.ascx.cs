@@ -12,9 +12,10 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.UserControls;
 using Newtonsoft.Json.Linq;
 using Simplisity;
-using ToastedMod.Components;
+using CDSviewerDNN.Components;
+using CDScomm;
 
-namespace ToastedMod
+namespace CDSviewerDNN
 {
     public partial class Edit : PortalModuleBase
     {
@@ -34,7 +35,7 @@ namespace ToastedMod
                 PageId = TabId;
 
                 //check if we have a skinsrc, if not add it and reload. NOTE: Where just asking for a infinate loop here, but DNN7.2 doesn't leave much option.
-                const string skinSrcAdmin = "?SkinSrc=%2fDesktopModules%2fToasted%2fToastedMod%2fSkins%2fToasted%2fToastedAdmin";
+                const string skinSrcAdmin = "?SkinSrc=%2fDesktopModules%2fCDSviewerDNN%2fSkins%2fCDSviewer%2fCDSviewerAdmin";
                 if (LocalUtils.RequestParam(Context, "SkinSrc") == "")
                 {
                     Response.Redirect(EditUrl() + skinSrcAdmin, false);
@@ -69,37 +70,27 @@ namespace ToastedMod
         private string EditData()
         {
             var strOut = "No Service";
-            if (LocalUtils.HasModuleEditRights(TabId, ModuleId))
+            var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
+            if (moduleData.Exists)
             {
-                LocalUtils.SetEditCulture(""); // set to current langauge
+                var sessionJson = LocalUtils.GetCookieValue("simplisity_sessionparams");  // get session params from cookie, if it exists.
 
-                var remoteParam = new RemoteLimpet(PortalId, TabId, ModuleId);
-                if (remoteParam.Exists && remoteParam.EngineURL != "")
+                moduleData.LoadUrlParams(Request.QueryString);
+                moduleData.LoadPageUrl(TabId);
+                moduleData.LoadSessionParams(sessionJson);
+
+                if (moduleData.ServiceRef == "")
                 {
-                    var sessionCookie = LocalUtils.GetCookieValue("simplisity_sessionparams");
-                    if (sessionCookie != null && sessionCookie != "")
-                    {
-                        JToken token = JObject.Parse(sessionCookie);
-                        var ccode = (string)token.SelectToken("culturecodeedit");
-                        if (ccode != "") remoteParam.CultureCodeEdit = ccode;
-                        remoteParam.Update();
-                    }
-
-                    var serviceData = new ServiceLimpet(PortalId);
-                    if (!serviceData.ServiceExists(remoteParam.ServiceRef))
-                    {
-                        remoteParam.ServiceRef = "";
-                        remoteParam.Update();
-                    }
-                    if (remoteParam.ServiceRef == "")
-                    {
-                        strOut = LocalUtils.RenderServiceTemplate(PortalId, ModuleId, TabId);
-                    }
-                    else
-                    {
-                        strOut = LocalUtils.RenderRemoteTemplate(PortalId, ModuleId, TabId, "remote_edit");
-                    }
+                    strOut = "No Service";
                 }
+                else
+                {
+                    // Call to the CDS server.
+                    var comm = new CommLimpet(moduleData.Record);
+                    var commReturn = comm.CallRedirect("remote_edit", "", "");
+                    strOut = commReturn.ViewHtml;
+                }
+
             }
             return strOut;
         }

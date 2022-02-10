@@ -61,14 +61,48 @@
     <Compile Include="apihandler.ashx.cs">
       <DependentUpon>apihandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="AppTheme.ascx.cs">
+      <DependentUpon>AppTheme.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppTheme.ascx.designer.cs">
+      <DependentUpon>AppTheme.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="App_LocalResources\Edit.Designer.cs" />
+    <Compile Include="App_LocalResources\Settings.ascx.Designer.cs" />
+    <Compile Include="App_LocalResources\View.ascx.Designer.cs" />
     <Compile Include="Components\LocalUtils.cs" />
     <Compile Include="Components\ModuleDataLimpet.cs" />
     <Compile Include="Components\ServiceDataLimpet.cs" />
+    <Compile Include="Edit.ascx.cs">
+      <DependentUpon>Edit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Edit.ascx.designer.cs">
+      <DependentUpon>Edit.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\DataInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reload.ascx.cs">
+      <DependentUpon>Reload.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reload.ascx.designer.cs">
+      <DependentUpon>Reload.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services.ascx.cs">
+      <DependentUpon>Services.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services.ascx.designer.cs">
+      <DependentUpon>Services.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Setup.ascx.cs">
       <DependentUpon>Setup.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup.ascx.designer.cs">
+      <DependentUpon>Setup.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="SqlDataProvider\DataProvider.cs" />
     <Compile Include="SqlDataProvider\SqlDataProvider.cs" />
@@ -82,17 +116,31 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppTheme.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="css\w3.css" />
+    <Content Include="Edit.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="js\simplisity.js" />
+    <Content Include="Reload.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Services.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Setup.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Skins\Toasted\skin.doctype.xml" />
-    <Content Include="Skins\Toasted\CDSviewerAdmin.ascx">
+    <Content Include="Skins\CDSviewer\skin.doctype.xml" />
+    <Content Include="Skins\CDSviewer\CDSviewerAdmin.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Skins\Toasted\CDSviewerEmpty.ascx" />
-    <Content Include="Skins\Toasted\CDSviewerTopBar.ascx">
+    <Content Include="Skins\CDSviewer\CDSviewerEmpty.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Skins\CDSviewer\CDSviewerTopBar.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="View.ascx">
@@ -107,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="apihandler.ashx" />
+    <None Include="dnnpack.config" />
     <None Include="DNNpackager.dnnpack" />
     <None Include="Docs\TechDocs.md" />
     <None Include="Installation\01.00.00.SqlDataProvider" />
@@ -116,7 +165,14 @@
     <None Include="CDSviewerDNN.dnn" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="App_LocalResources\Edit.resx" />
     <EmbeddedResource Include="App_LocalResources\Settings.ascx.resx" />
+    <EmbeddedResource Include="App_LocalResources\View.ascx.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>DNNpackager.exe $(ProjectDir) $(TargetDir) $(ConfigurationName)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

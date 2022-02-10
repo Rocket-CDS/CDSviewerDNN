@@ -31,7 +31,7 @@ namespace CDSviewerDNN
                 PageId = TabId;
 
                 //check if we have a skinsrc, if not add it and reload. NOTE: Where just asking for a infinate loop here, but DNN7.2 doesn't leave much option.
-                const string skinSrcAdmin = "?SkinSrc=%2fDesktopModules%2fToasted%2fToastedMod%2fSkins%2fToasted%2fToastedAdmin";
+                const string skinSrcAdmin = "?SkinSrc=%2fDesktopModules%2fCDSviewerDNN%2fSkins%2fCDSviewer%2fCDSviewerAdmin";
                 if (LocalUtils.RequestParam(Context, "SkinSrc") == "")
                 {
                     Response.Redirect(EditUrl("Setup") + skinSrcAdmin, false);
@@ -58,28 +58,25 @@ namespace CDSviewerDNN
             LocalUtils.RemoveCache("editoption" + ModuleId); // flag to know if we want to display the edit option on the module menu.
 
             var strOut = "No Service";
-            if (LocalUtils.HasModuleEditRights(TabId, ModuleId))
+            var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
+            if (moduleData.Exists)
             {
-                var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
-                if (moduleData.Exists)
+                var serviceData = new ServiceDataLimpet(PortalId);
+                if (!serviceData.ServiceExists(moduleData.ServiceRef))
                 {
-                    var serviceData = new ServiceDataLimpet(PortalId);
-                    if (!serviceData.ServiceExists(moduleData.ServiceRef))
-                    {
-                        moduleData.ServiceRef = "";
-                        moduleData.Update();
-                    }
-                    if (moduleData.ServiceRef == "")
-                    {
-                        strOut = "No Service";
-                    }
-                    else
-                    {
-                        // Call to the CDS server.
-                        var comm = new CommLimpet(moduleData.Record);
-                        var commReturn = comm.CallRedirect("remote_settings", "", "");
-                        strOut = commReturn.ViewHtml;
-                    }
+                    moduleData.ServiceRef = "";
+                    moduleData.Update();
+                }
+                if (moduleData.ServiceRef == "")
+                {
+                    strOut = "No Service";
+                }
+                else
+                {
+                    // Call to the CDS server.
+                    var comm = new CommLimpet(moduleData.Record);
+                    var commReturn = comm.CallRedirect("remote_settings", "", "");
+                    strOut = commReturn.ViewHtml;
                 }
             }
             return strOut;

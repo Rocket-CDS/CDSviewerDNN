@@ -11,9 +11,9 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.UserControls;
 using Simplisity;
-using ToastedMod.Components;
+using CDSviewerDNN.Components;
 
-namespace ToastedMod
+namespace CDSviewerDNN
 {
     public partial class Reload: PortalModuleBase
     {

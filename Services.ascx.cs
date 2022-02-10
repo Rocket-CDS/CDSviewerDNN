@@ -11,9 +11,9 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.UserControls;
 using Simplisity;
-using ToastedMod.Components;
+using CDSviewerDNN.Components;
 
-namespace ToastedMod
+namespace CDSviewerDNN
 {
     public partial class Services : PortalModuleBase
     {
@@ -31,7 +31,7 @@ namespace ToastedMod
                 LocalUtils.RemoveCache("editoption" + ModuleId);
 
                 //check if we have a skinsrc, if not add it and reload. NOTE: Where just asking for a infinate loop here, but DNN7.2 doesn't leave much option.
-                const string skinSrcAdmin = "?SkinSrc=%2fDesktopModules%2fToasted%2fToastedMod%2fSkins%2fToasted%2fToastedAdmin";
+                const string skinSrcAdmin = "?SkinSrc=%2fDesktopModules%2fCDSviewerDNN%2fSkins%2fCDSviewer%2fCDSviewerAdmin";
                 if (LocalUtils.RequestParam(Context, "SkinSrc") == "")
                 {
                     Response.Redirect(EditUrl("Services") + skinSrcAdmin, false);
@@ -41,14 +41,15 @@ namespace ToastedMod
 
                 if (Page.IsPostBack == false && _doSkinRedirect == false)
                 {
-                    var razorTemplateFileMapPath = LocalUtils.MapPath("/DesktopModules/Toasted/ToastedMod/Themes/config-w3/1.0/default/Services.cshtml");
+                    var razorTemplateFileMapPath = LocalUtils.MapPath("/DesktopModules/CDSviewerDNN/Themes/config-w3/1.0/default/Services.cshtml");
                     var razorTemplate = FileSystemUtils.ReadFile(razorTemplateFileMapPath);
 
-                    var serviceData = new ServiceLimpet(PortalId);
+                    var serviceData = new ServiceDataLimpet(PortalId);
                     SystemKey = serviceData.SystemKey;
                     var nbRazor = new SimplisityRazor(serviceData);
-                    var remoteparams = new RemoteLimpet(PortalId, TabId, ModuleId);
-                    nbRazor.SetDataObject("remoteparams", remoteparams);
+
+                    var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
+                    nbRazor.SetDataObject("moduledata", moduleData);
                     String razorText = LocalUtils.RazorRender(nbRazor, razorTemplate, true);
 
                     var lit = new Literal();

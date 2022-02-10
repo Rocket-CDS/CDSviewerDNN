@@ -138,17 +138,18 @@ namespace CDSviewerDNN.Components
 
             return result;
         }
-        public static bool HasModuleAdminRights(int tabId, int moduleId)
+        public static bool HasModuleAdminRights(int moduleId)
         {
             try
             {
-                if (tabId <= 0 && moduleId <= 0) return true;
-                if (tabId == 0) return false;
                 if (moduleId == 0) return false;
-                var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
-                if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", moduleInfo))
+                // Data security is not linked ot the tab, only the data.  Unlike DNN.  Search all tabs for any security access granted.
+                foreach (ModuleInfo modInfo in ModuleController.Instance.GetAllTabsModulesByModuleID(moduleId))
                 {
-                    return true;
+                    if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", modInfo))
+                    {
+                        return true;
+                    }
                 }
             }
             catch (Exception)
@@ -157,17 +158,18 @@ namespace CDSviewerDNN.Components
             }
             return false;
         }
-        public static bool HasModuleEditRights(int tabId, int moduleId)
+        public static bool HasModuleEditRights(int moduleId)
         {
             try
             {
-                if (tabId <= 0 && moduleId <= 0) return true;
-                if (tabId == 0) return false;
                 if (moduleId == 0) return false;
-                var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
-                if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", moduleInfo))
+                // Data security is not linked ot the tab, only the data.  Unlike DNN.  Search all tabs for any security access granted.
+                foreach (ModuleInfo modInfo in ModuleController.Instance.GetAllTabsModulesByModuleID(moduleId))
                 {
-                    return true;
+                    if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", modInfo))
+                    {
+                        return true;
+                    }
                 }
             }
             catch (Exception)
@@ -195,6 +197,47 @@ namespace CDSviewerDNN.Components
 
             return (result == null) ? String.Empty : result.Trim();
         }
+        public static bool IsSuperUser()
+        {
+            if (!IsAuthorised()) return false;
+            return UserController.Instance.GetCurrentUserInfo().IsSuperUser;
+        }
+        public static bool IsAdministrator()
+        {
+            if (!IsAuthorised()) return false;
+            PortalInfo ps = PortalController.Instance.GetPortal(GetCurrentPortalId());
+            return ps != null && UserController.Instance.GetCurrentUserInfo().IsInRole(ps.AdministratorRoleName);
+        }
+        public static bool IsAuthorised()
+        {
+            return IsAuthorised(PortalSettings.Current.PortalId, UserController.Instance.GetCurrentUserInfo().UserID);
+        }
+        public static bool IsAuthorised(int portalId, int userId)
+        {
+            var userInfo = UserController.GetUserById(portalId, userId);
+            if (userInfo != null) return userInfo.Membership.Approved;
+            return false;
+        }
+        /// <summary>
+        /// Recycles a web site Application Pool (including the current web site).
+        /// Requires to reference Microsoft.Web.Administration and System.Web.Hosting.
+        /// IMPORTANT: The IIS user requires extended permissions to recycle application pool(s).
+        /// </summary>
+        /// <param name="siteName">The site name: leave it NULL to recycle the current site's App Pool.</param>
+        /// <returns>TRUE if the site's App Pool has been recycled; FALSE if no site has been found with the given name.</returns>
+        public static bool RecycleApplicationPool(string siteName = null)
+        {
+            try
+            {
+                RetryableAction.Retry5TimesWith2SecondsDelay(() => File.SetLastWriteTime(Globals.ApplicationMapPath + "\\web.config", DateTime.Now), "Touching config file");
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
 
 
         public static void SetCache(string cacheKey, object objObject, int keephours = 4)
@@ -208,6 +251,10 @@ namespace CDSviewerDNN.Components
         public static void RemoveCache(string cacheKey)
         {
             DataCache.RemoveCache(cacheKey);
+        }
+        public static void ClearAllCache()
+        {
+            DataCache.ClearCache();
         }
 
 

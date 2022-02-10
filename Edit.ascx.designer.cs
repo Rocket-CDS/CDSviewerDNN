@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ToastedMod
+namespace CDSviewerDNN
 {
 
 

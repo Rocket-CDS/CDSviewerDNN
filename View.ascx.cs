@@ -118,8 +118,8 @@ namespace CDSviewerDNN
                 {
                     // Call to the CDS server.
                     var comm = new CommLimpet(_moduleData.Record);
-                    _commReturn = comm.CallRedirect("remote_editoption", "", "");
-                    editoption = _commReturn.ViewHtml;
+                    var commOptReturn = comm.CallRedirect("remote_editoption", "", "");
+                    editoption = commOptReturn.ViewHtml;
                     LocalUtils.SetCache("editoption" + ModuleId, editoption);
                 }
                 Boolean parsedValue;
@@ -130,7 +130,7 @@ namespace CDSviewerDNN
                         optionValue = true;
                     else
                         optionValue = false;
-                } 
+                }
                 else
                     optionValue = false;
 

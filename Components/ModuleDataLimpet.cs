@@ -20,9 +20,30 @@ namespace CDSviewerDNN.Components
         private const string _entityTypeCode = "CDSviewerModuleData";
 
         private CDSviewerController _objCtrl;
+        /// <summary>
+        /// Used for local API communication, where we do not have the moduleid.
+        /// It is only initiated from the local API (apihandler.ashx)
+        /// </summary>
+        /// <param name="moduleRef">Link to specific module data that has already been created.</param>
+        public ModuleDataLimpet(int portalId, string moduleRef)
+        {
+            _objCtrl = new CDSviewerController(); // Database controller.
+            RecordxRef = _objCtrl.GetRecordByGuidKey(portalId, -1, "XREFMOD", moduleRef, "", _tableName); // get existing record.
+            _guidKey = "Module" + portalId + "*" + RecordxRef.ModuleId;
+            Record = _objCtrl.GetRecordByGuidKey(portalId, RecordxRef.ModuleId, _entityTypeCode, _guidKey, "", _tableName); // get existing record.
+        }
+        /// <summary>
+        /// Load/Create DNN module communication data.
+        /// It is only called from the DNN module server-side code.  Where we know the moduleId and tabid
+        /// </summary>
+        /// <param name="portalId">Link the data to a specific portal in DNN.</param>
+        /// <param name="moduleId">Link the data to a specific module in DNN.</param>
         public ModuleDataLimpet(int portalId, int moduleId)
         {
+            // on a normal pageload in DNN we know the moduleId, not the CDS moduleref.
             _guidKey = "Module" + portalId + "*" + moduleId;
+
+            _objCtrl = new CDSviewerController(); // Database controller.
 
             Record = new SimplisityRecord();
             Record.ItemID = -1;
@@ -33,22 +54,35 @@ namespace CDSviewerDNN.Components
             Record.Lang = "";
             Record.GUIDKey = _guidKey;
 
-            // Create a unique ref to be used on CDS for data storage and template ID fields.
-            // (The moduleId may not be unique across systems.)
-            if (Record.GetXmlProperty("genxml/remote/moduleref") == "")
-            {
-                Record.SetXmlProperty("genxml/remote/moduleref", GeneralUtils.GetGuidKey() + moduleId);
-            }
-            Record.SetXmlProperty("genxml/remote/apiurl", "/Desktopmodules/CDSviewer/CDSviewerDNN/apihandler.ashx");
+            // Save the local API url, so we can call it from the client side JS.
+            Record.SetXmlProperty("genxml/remote/apiurl", "/Desktopmodules/CDSviewerDNN/apihandler.ashx");
 
-            _objCtrl = new CDSviewerController();
-            Populate();
-        }
-        private void Populate()
-        {
-            var rec = _objCtrl.GetRecordByGuidKey(PortalId, -1, _entityTypeCode, _guidKey, "", _tableName); // get existing record.
+            // Get Data record for this module, using moduleId.
+            var rec = _objCtrl.GetRecordByGuidKey(portalId, moduleId, _entityTypeCode, _guidKey, "", _tableName); // get existing record.
             if (rec != null) Record = rec;
+
+            // Create a unique moduleref to be used by the CDS for data storage.
+            // (The moduleId may not be unique across systems.)
+            var moduleRef = Record.GetXmlProperty("genxml/remote/moduleref");
+            var recxref = _objCtrl.GetRecordByGuidKey(PortalId, moduleId, "XREFMOD", moduleRef, "", _tableName); // get existing record.
+            if (recxref != null) RecordxRef = recxref;
+            if (moduleRef == "" || RecordxRef == null)
+            {
+                moduleRef = GeneralUtils.GetGuidKey() + moduleId; // create a moduleref for CDS usage.
+                Record.SetXmlProperty("genxml/remote/moduleref", moduleRef);
+                // create a XREFMOD record so we can use the CDS moduleref to get the moduleID for DNN.
+                RecordxRef = new SimplisityRecord();
+                RecordxRef.PortalId = portalId;
+                RecordxRef.ModuleId = moduleId;
+                RecordxRef.GUIDKey = moduleRef;
+                RecordxRef.TypeCode = "XREFMOD";
+            }
+            if (rec == null || recxref == null) Update();
         }
+        /// <summary>
+        /// Reset the moduleData record to match the CDS connection.
+        /// </summary>
+        /// <param name="serviceCode">CDS Service Code</param>
         public void LoadServiceSecurityCode(string serviceCode)
         {
             try
@@ -110,6 +144,8 @@ namespace CDSviewerDNN.Components
         }
         public int Update()
         {
+            var xrefId = _objCtrl.Update(RecordxRef, _tableName);
+            Record.XrefItemId = xrefId;
             return _objCtrl.Update(Record, _tableName);
         }
 
@@ -125,7 +161,6 @@ namespace CDSviewerDNN.Components
                     ServiceRef = service.GetXmlProperty("genxml/config/serviceref");
                     var serviceCode = service.GetXmlProperty("genxml/textbox/servicecode");
                     LoadServiceSecurityCode(serviceCode);
-                    Update();
                 }
             }
         }
@@ -134,7 +169,9 @@ namespace CDSviewerDNN.Components
 
         public SimplisityInfo Info { get { return new SimplisityInfo(Record); } } 
         public SimplisityRecord Record { get; set; }
+        public SimplisityRecord RecordxRef { get; set; }
         public int ModuleId { get { return Record.ModuleId; } set { Record.ModuleId = value; } }
+        public int TabId { get { return Record.ParentItemId; } set { Record.ParentItemId = value; } }
         public int XrefItemId { get { return Record.XrefItemId; } set { Record.XrefItemId = value; } }
         public int ParentItemId { get { return Record.ParentItemId; } set { Record.ParentItemId = value; } }
         public int CategoryId { get { return Record.ItemID; } set { Record.ItemID = value; } }
@@ -145,7 +182,7 @@ namespace CDSviewerDNN.Components
         public string SystemKey { get { return Record.GetXmlProperty("genxml/remote/systemkey"); } }
         public string EngineUrl { get { return Record.GetXmlProperty("genxml/remote/engineurl"); } }
         public string ServiceRef { get { return Record.GetXmlProperty("genxml/remote/serviceref"); } set { Record.SetXmlProperty("genxml/remote/serviceref", value); } }
-
+        public string ModuleRef { get { return RecordxRef.GUIDKey; }  }
         #endregion
 
     }

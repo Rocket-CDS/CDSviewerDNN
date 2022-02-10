@@ -1,7 +1,7 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Edit.ascx.cs" Inherits="ToastedMod.Edit" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Edit.ascx.cs" Inherits="CDSviewerDNN.Edit" %>
 
-<script type="text/javascript" src="/DesktopModules/Toasted/ToastedMod/js/simplisity.js"></script>
-<link rel="stylesheet" href="/DesktopModules/Toasted/ToastedMod/css/w3.css">
+<script type="text/javascript" src="/DesktopModules/CDSviewerDNN/js/simplisity.js"></script>
+<link rel="stylesheet" href="/DesktopModules/CDSviewerDNN/css/w3.css">
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -33,7 +33,7 @@
 
 <script>
     $(document).ready(function () {       
-        $(document).simplisityStartUp('/Desktopmodules/toasted/ToastedMod/apihandler.ashx', '{"debug":"false"}');
+        $(document).simplisityStartUp('/Desktopmodules/CDSviewerDNN/apihandler.ashx', '{"debug":"false"}');
     });
 </script>
 

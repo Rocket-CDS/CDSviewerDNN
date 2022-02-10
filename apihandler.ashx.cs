@@ -35,11 +35,7 @@ namespace CDSviewerDNN
             {
                 _paramInfo = SimplisityJson.GetSimplisityInfoFromJson(HttpUtility.UrlDecode(paramJson), "");
                 _moduleref = _paramInfo.GetXmlProperty("genxml/hidden/moduleref");
-                _moduleid = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-                _tabid = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid");
-
-                _moduleData = new ModuleDataLimpet(LocalUtils.GetCurrentPortalId(), _moduleid);
-                _moduleData.LoadPageUrl(_tabid);
+                _moduleData = new ModuleDataLimpet(LocalUtils.GetCurrentPortalId(), _moduleref);
                 // simplisity puts any session fields in a cookie string as json
                 // We need to pass these values to the data service.
                 var sessionJson = LocalUtils.GetCookieValue("simplisity_sessionparams");  // get session params from cookie, if it exists.
@@ -48,17 +44,22 @@ namespace CDSviewerDNN
                 _postInfo = SimplisityJson.GetSimplisityInfoFromJson(HttpUtility.UrlDecode(postJson), "");
                 if (!paramCmd.StartsWith("services_"))
                 {
-                        context.Response.ContentType = "text/plain";
+                    context.Response.ContentType = "text/plain";
 
-                        // Call to the CDS server.
-                        var comm = new CommLimpet(_moduleData.Record);
-                        _commReturn = comm.CallRedirect(paramCmd, postJson, paramJson);
-                        if (_commReturn.StatusCode != "00")
-                        {
-                            var sRazor = new SimplisityRazor();
-                            var t = LocalUtils.ReadTemplate("Reload.cshtml");
-                            strOut = LocalUtils.RazorRender(sRazor, t, true);
-                        }
+                    // Call to the CDS server.
+                    var comm = new CommLimpet(_moduleData.Record);
+                    _commReturn = comm.CallRedirect(paramCmd, postJson, paramJson);
+                    if (_commReturn.StatusCode != "00")
+                    {
+                        var sRazor = new SimplisityRazor();
+                        var t = LocalUtils.ReadTemplate("Reload.cshtml");
+                        t += "<div>" + _commReturn.ErrorMsg + "</div>";
+                        strOut = LocalUtils.RazorRender(sRazor, t, true);
+                    }
+                    else
+                    {
+                        strOut = _commReturn.ViewHtml;
+                    }
                 }
                 else
                 {
@@ -97,10 +98,9 @@ namespace CDSviewerDNN
 
         private string SaveService()
         {
-            if (LocalUtils.HasModuleAdminRights(_tabid, _moduleid))
+            if (LocalUtils.HasModuleAdminRights(_moduleData.ModuleId))
             {
-
-                _postInfo.PortalId = PortalSettings.Current.PortalId;
+                    _postInfo.PortalId = PortalSettings.Current.PortalId;
                 var serviceData = new ServiceDataLimpet(PortalSettings.Current.PortalId);
                 serviceData.SaveServiceCode(_postInfo);
                 if (serviceData.GetServices().Count == 1)
@@ -120,7 +120,7 @@ namespace CDSviewerDNN
         }
         private string DeleteService()
         {
-            if (LocalUtils.HasModuleAdminRights(_tabid, _moduleid))
+            if (LocalUtils.HasModuleAdminRights(_moduleData.ModuleId))
             {
                 var serviceData = new ServiceDataLimpet(PortalSettings.Current.PortalId);
                 if (serviceData.Exists)
@@ -139,7 +139,7 @@ namespace CDSviewerDNN
         }
         private string SelectService()
         {
-            if (LocalUtils.HasModuleAdminRights(_tabid, _moduleid))
+            if (LocalUtils.HasModuleAdminRights(_moduleData.ModuleId))
             {
                 _moduleData.SaveSelectedService(PortalSettings.Current.PortalId, _postInfo);
             }

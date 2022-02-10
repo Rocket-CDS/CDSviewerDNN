@@ -88,6 +88,11 @@
               <name>RazorEngine.dll</name>
               <sourceFileName>RazorEngine.dll</sourceFileName>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>CDScomm.dll</name>
+              <sourceFileName>CDScomm.dll</sourceFileName>
+            </assembly>
           </assemblies>
 				</component>
         
@@ -95,7 +100,7 @@
 					<desktopModule>
 						<moduleName>CDSviewerDNN</moduleName>
 						<foldername>CDSviewerDNN</foldername>
-						<businessControllerClass>CDSviewer.Components.ToastedDNNController,CDSviewerDNN</businessControllerClass>
+						<businessControllerClass>CDSviewerDNN.CDSviewerController,CDSviewerDNN</businessControllerClass>
 						<supportedFeatures>
 							<supportedFeature type="Portable" />
               <supportedFeature type="Upgradeable" />

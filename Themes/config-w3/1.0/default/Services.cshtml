@@ -3,8 +3,8 @@
 @using CDSviewerDNN.Components
 
 @{
-    var serviceData = (ServiceLimpet)Model.List.First();
-    var remoteParams = (RemoteLimpet)Model.GetDataObject("remoteparams");
+    var serviceData = (ServiceDataLimpet)Model.List.First();
+    var moduleData = (ModuleDataLimpet)Model.GetDataObject("moduledata");
     var idx = 0;
 }
 
@@ -23,7 +23,7 @@
                 @TextArea(new SimplisityInfo(), "genxml/textbox/servicecode", " class='w3-input w3-border' style='height:45px;' ")
             </div>
             <div class="w3-col m1 w3-padding" style="max-width:60px;">
-                <div class="w3-button w3-teal simplisity_click" s-cmd="services_savedata" s-post="#servicessection" s-fields='{"tabid":"@(remoteParams.TabId)","moduleid":"@remoteParams.ModuleId"}' s-reload="true">
+                <div class="w3-button w3-teal simplisity_click" s-cmd="services_savedata" s-post="#servicessection" s-fields='{"moduleref":"@(moduleData.ModuleRef)"}' s-reload="true">
                     <span class="material-icons">
                         save
                     </span>
@@ -42,8 +42,8 @@
                 {
                     <tr>
                         <td style="width:60px;">
-                            <span class="w3-button w3-right simplisity_click" s-cmd="services_selectservice" s-reload="true" s-fields='{"tabid":"@(remoteParams.TabId)","moduleid":"@remoteParams.ModuleId","servicecodeidx":"@(idx)"}'>
-                                @if (serviceRec.GetXmlProperty("genxml/config/serviceref") == remoteParams.ServiceRef)
+                            <span class="w3-button w3-right simplisity_click" s-cmd="services_selectservice" s-reload="true" s-fields='{"moduleref":"@(moduleData.ModuleRef)","servicecodeidx":"@(idx)"}'>
+                                @if (serviceRec.GetXmlProperty("genxml/config/serviceref") == moduleData.ServiceRef)
                                 {
                                     <span class="material-icons w3-text-green">check_circle_outline</span>
                                 }
@@ -57,7 +57,7 @@
                             @serviceRec.GetXmlProperty("genxml/name")
                         </td>
                         <td style="width:60px;">
-                            <span class="w3-button w3-right simplisity_click" s-cmd="services_delete" s-reload="true" s-fields='{"tabid":"@(remoteParams.TabId)","moduleid":"@remoteParams.ModuleId","servicecodeidx":"@(idx)"}'>
+                            <span class="w3-button w3-right simplisity_click" s-cmd="services_delete" s-reload="true" s-fields='{"moduleref":"@(moduleData.ModuleRef)","servicecodeidx":"@(idx)"}'>
                                 <span class="material-icons">
                                     remove
                                 </span>
@@ -74,7 +74,9 @@
     <div class="w3-quarter w3-hide-small w3-hide-medium">&nbsp;</div>
 
 </div>
-
+<div class="w3-row w3-padding w3-tiny">
+    <span>moduleref:&nbsp;@(moduleData.ModuleRef)</span>
+</div>
 <script>
     $(document).ready(function () {
     });
