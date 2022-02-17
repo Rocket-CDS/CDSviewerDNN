@@ -1,7 +1,7 @@
 using System;
 using System.Web.UI.WebControls;
 using System.Xml;
-using CDScomm;
+using RocketComm;
 using CDSviewerDNN.Components;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
@@ -146,7 +146,7 @@ namespace CDSviewerDNN
                 actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("services", this.LocalResourceFile), "", "", "", EditUrl("Services"), false, SecurityAccessLevel.Admin, true, false);
                 actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("apptheme", this.LocalResourceFile), "", "", "", EditUrl("AppTheme"), false, SecurityAccessLevel.Admin, true, false);
 
-                actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("clearcache", this.LocalResourceFile), "", "", "", EditUrl("cmd","clearcache","Reload"), false, SecurityAccessLevel.Host, true, false);
+                //actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("clearcache", this.LocalResourceFile), "", "", "", EditUrl("cmd","clearcache","Reload"), false, SecurityAccessLevel.Host, true, false);
                 actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("recycleapppool", this.LocalResourceFile), "", "", "", EditUrl("cmd", "recycleapppool", "Reload"), false, SecurityAccessLevel.Host, true, false);
 
                 return actions;

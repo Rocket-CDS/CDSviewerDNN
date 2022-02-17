@@ -148,12 +148,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Utils\CDScomm\.Netstandard\CDScomm\CDScomm.csproj">
-      <Project>{724e0d90-a411-45f4-a742-087bfeafb3ad}</Project>
-      <Name>CDScomm</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="apihandler.ashx" />
     <None Include="dnnpack.config" />
     <None Include="DNNpackager.dnnpack" />
@@ -170,6 +164,12 @@
     <EmbeddedResource Include="App_LocalResources\View.ascx.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DNNrocket\RocketClient\NetStandard\RocketComm.csproj">
+      <Project>{440ca746-6e70-4d27-b599-db8b25311aa3}</Project>
+      <Name>RocketComm</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

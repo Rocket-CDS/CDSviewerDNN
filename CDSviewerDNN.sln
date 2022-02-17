@@ -5,22 +5,42 @@ VisualStudioVersion = 16.0.31829.152
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CDSviewerDNN", "CDSviewerDNN.csproj", "{1E1DB414-AF24-4936-AE8E-8F8009CAD196}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CDScomm", "..\..\Utils\CDScomm\.Netstandard\CDScomm\CDScomm.csproj", "{724E0D90-A411-45F4-A742-087BFEAFB3AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketComm", "..\DNNrocket\RocketClient\NetStandard\RocketComm.csproj", "{440CA746-6E70-4D27-B599-DB8B25311AA3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simplisity", "..\DNNrocket\Simplisity\Simplisity.csproj", "{6A92D0AC-FAF8-42C7-8336-A69EC8286A16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Comp All|Any CPU = Comp All|Any CPU
+		CompAll|Any CPU = CompAll|Any CPU
 		Debug|Any CPU = Debug|Any CPU
+		Razor|Any CPU = Razor|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E1DB414-AF24-4936-AE8E-8F8009CAD196}.Comp All|Any CPU.ActiveCfg = Release|Any CPU
+		{1E1DB414-AF24-4936-AE8E-8F8009CAD196}.Comp All|Any CPU.Build.0 = Release|Any CPU
+		{1E1DB414-AF24-4936-AE8E-8F8009CAD196}.CompAll|Any CPU.ActiveCfg = Release|Any CPU
+		{1E1DB414-AF24-4936-AE8E-8F8009CAD196}.CompAll|Any CPU.Build.0 = Release|Any CPU
 		{1E1DB414-AF24-4936-AE8E-8F8009CAD196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1E1DB414-AF24-4936-AE8E-8F8009CAD196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E1DB414-AF24-4936-AE8E-8F8009CAD196}.Razor|Any CPU.ActiveCfg = Release|Any CPU
 		{1E1DB414-AF24-4936-AE8E-8F8009CAD196}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E1DB414-AF24-4936-AE8E-8F8009CAD196}.Release|Any CPU.Build.0 = Release|Any CPU
-		{724E0D90-A411-45F4-A742-087BFEAFB3AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{724E0D90-A411-45F4-A742-087BFEAFB3AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{724E0D90-A411-45F4-A742-087BFEAFB3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{724E0D90-A411-45F4-A742-087BFEAFB3AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{440CA746-6E70-4D27-B599-DB8B25311AA3}.Comp All|Any CPU.ActiveCfg = Release|Any CPU
+		{440CA746-6E70-4D27-B599-DB8B25311AA3}.Comp All|Any CPU.Build.0 = Release|Any CPU
+		{440CA746-6E70-4D27-B599-DB8B25311AA3}.CompAll|Any CPU.ActiveCfg = Release|Any CPU
+		{440CA746-6E70-4D27-B599-DB8B25311AA3}.CompAll|Any CPU.Build.0 = Release|Any CPU
+		{440CA746-6E70-4D27-B599-DB8B25311AA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{440CA746-6E70-4D27-B599-DB8B25311AA3}.Razor|Any CPU.ActiveCfg = Release|Any CPU
+		{440CA746-6E70-4D27-B599-DB8B25311AA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A92D0AC-FAF8-42C7-8336-A69EC8286A16}.Comp All|Any CPU.ActiveCfg = Comp All|Any CPU
+		{6A92D0AC-FAF8-42C7-8336-A69EC8286A16}.Comp All|Any CPU.Build.0 = Comp All|Any CPU
+		{6A92D0AC-FAF8-42C7-8336-A69EC8286A16}.CompAll|Any CPU.ActiveCfg = CompAll|Any CPU
+		{6A92D0AC-FAF8-42C7-8336-A69EC8286A16}.CompAll|Any CPU.Build.0 = CompAll|Any CPU
+		{6A92D0AC-FAF8-42C7-8336-A69EC8286A16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A92D0AC-FAF8-42C7-8336-A69EC8286A16}.Razor|Any CPU.ActiveCfg = Razor|Any CPU
+		{6A92D0AC-FAF8-42C7-8336-A69EC8286A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,7 +12,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.UserControls;
 using Simplisity;
 using CDSviewerDNN.Components;
-using CDScomm;
+using RocketComm;
 
 namespace CDSviewerDNN
 {

@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Simplisity;
 using CDSviewerDNN.Components;
-using CDScomm;
+using RocketComm;
 
 namespace CDSviewerDNN
 {

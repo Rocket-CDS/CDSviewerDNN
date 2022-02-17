@@ -13,7 +13,7 @@ using DotNetNuke.UI.UserControls;
 using Newtonsoft.Json.Linq;
 using Simplisity;
 using CDSviewerDNN.Components;
-using CDScomm;
+using RocketComm;
 
 namespace CDSviewerDNN
 {
