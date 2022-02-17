@@ -348,3 +348,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+Installation/CDSviewerDNN_1.0.6_Install.zip
+dnnpack.config
