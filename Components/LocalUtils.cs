@@ -236,8 +236,13 @@ namespace CDSviewerDNN.Components
             {
                 return false;
             }
-
         }
+        public static string GetCurrentCulture()
+        {
+            CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
+            return currentCulture.Name;
+        }
+
 
 
         public static void SetCache(string cacheKey, object objObject, int keephours = 4)

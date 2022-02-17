@@ -137,9 +137,10 @@ namespace CDSviewerDNN.Components
 
         public void Delete()
         {
-            if (Record.ItemID > 0)
+            var l = _objCtrl.GetList(Record.PortalId, Record.ModuleId, "","","","",0,0,0,0, _tableName);
+            foreach (var r in l)
             {
-                _objCtrl.Delete(Record.ItemID, _tableName);
+                _objCtrl.Delete(r.ItemID, _tableName);
             }
         }
         public int Update()
@@ -179,6 +180,8 @@ namespace CDSviewerDNN.Components
         public int SortOrder { get { return Record.SortOrder; } set { Record.SortOrder = value; } }
         public int PortalId { get { return Record.PortalId; } }
         public bool Exists { get { if (Record.ItemID <= 0) { return false; } else { return true; }; } }
+        public string CultureCode { get { return Record.GetXmlProperty("genxml/remote/culturecode"); } set { Record.SetXmlProperty("genxml/remote/culturecode", value); } }
+        public string CultureCodeEdit { get { return Record.GetXmlProperty("genxml/remote/culturecodeedit"); } set { Record.SetXmlProperty("genxml/remote/culturecodeedit", value); } }
         public string SystemKey { get { return Record.GetXmlProperty("genxml/remote/systemkey"); } }
         public string EngineUrl { get { return Record.GetXmlProperty("genxml/remote/engineurl"); } }
         public string ServiceRef { get { return Record.GetXmlProperty("genxml/remote/serviceref"); } set { Record.SetXmlProperty("genxml/remote/serviceref", value); } }

@@ -42,6 +42,8 @@ namespace CDSviewerDNN
 
                 var sessionJson = LocalUtils.GetCookieValue("simplisity_sessionparams");  // get session params from cookie, if it exists.
                 _moduleData.LoadSessionParams(sessionJson);
+                // Load the current language,  the sessionJson might be wrong for the view load. 
+                _moduleData.CultureCode = LocalUtils.GetCurrentCulture();
 
                 // Call to the CDS server.
                 var comm = new CommLimpet(_moduleData.Record);
