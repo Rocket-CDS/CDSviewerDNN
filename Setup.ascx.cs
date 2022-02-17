@@ -69,7 +69,14 @@ namespace CDSviewerDNN
                 }
                 if (moduleData.ServiceRef == "")
                 {
-                    strOut = "No Service";
+                    var razorTemplateFileMapPath = LocalUtils.MapPath("/DesktopModules/CDSviewerDNN/Themes/config-w3/1.0/default/Services.cshtml");
+                    var razorTemplate = FileSystemUtils.ReadFile(razorTemplateFileMapPath);
+
+                    SystemKey = serviceData.SystemKey;
+                    var nbRazor = new SimplisityRazor(serviceData);
+                    nbRazor.SetDataObject("moduledata", moduleData);
+                    strOut = LocalUtils.RazorRender(nbRazor, razorTemplate, true);
+
                 }
                 else
                 {

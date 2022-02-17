@@ -137,11 +137,12 @@ namespace CDSviewerDNN.Components
 
         public void Delete()
         {
-            var l = _objCtrl.GetList(Record.PortalId, Record.ModuleId, "","","","",0,0,0,0, _tableName);
+            var l = _objCtrl.GetList(Record.PortalId, Record.ModuleId, "XREFMOD", "","","",0,0,0,0, _tableName);
             foreach (var r in l)
             {
                 _objCtrl.Delete(r.ItemID, _tableName);
             }
+            _objCtrl.Delete(Record.ItemID, _tableName);
         }
         public int Update()
         {
