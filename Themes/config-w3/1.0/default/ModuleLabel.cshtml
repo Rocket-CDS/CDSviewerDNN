@@ -1,0 +1,30 @@
+@inherits Simplisity.RazorEngineTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using CDSviewerDNN.Components
+
+@{
+    var moduleData = (ModuleDataLimpet)Model.List.First();
+    var remoteSetings = (SimplisityInfo)Model.GetDataObject("remotesettings");
+}
+
+
+<div style="
+    display: inline-block;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 16px;
+    line-height: 12px;
+    color: black;
+    font-size: 9px;
+    background-color: #fff;
+    padding: 2px 4px;
+    font-weight: bold;
+    user-select: none;
+    transition-duration: 200ms;
+    opacity: 1;">
+
+    @remoteSetings.GetXmlProperty("genxml/remote/modulename") : @remoteSetings.GetXmlProperty("genxml/remote/org").@remoteSetings.GetXmlProperty("genxml/remote/apptheme").@remoteSetings.GetXmlProperty("genxml/remote/appthemeversion") - @moduleData.ModuleRef
+
+</div>

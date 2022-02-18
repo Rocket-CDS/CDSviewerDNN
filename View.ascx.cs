@@ -9,6 +9,8 @@ using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using Newtonsoft.Json;
+using DotNetNuke.Common.Utilities;
+using Simplisity;
 
 namespace CDSviewerDNN
 {
@@ -26,6 +28,8 @@ namespace CDSviewerDNN
         private bool _hasEditAccess;
         private CommData _commReturn;
 
+        public string ModuleLabel { get; set; }
+        
         protected override void OnInit(EventArgs e)
         {
             try
@@ -83,7 +87,7 @@ namespace CDSviewerDNN
         private void PageLoad()
         {
             var basePage = (DotNetNuke.Framework.CDefault)this.Page;
-            var metaSEO = _commReturn.SeoHeader;
+            var metaSEO = _commReturn.SeoHeader();
             if (metaSEO.Title != "") basePage.Title = metaSEO.Title;
             if (metaSEO.Description != "") basePage.Description = metaSEO.Description;
             if (metaSEO.KeyWords != "") basePage.KeyWords = metaSEO.KeyWords;
@@ -93,6 +97,19 @@ namespace CDSviewerDNN
             var strOut = _commReturn.ViewHtml;
             if (_commReturn.StatusCode == "404") LocalUtils.Handle404Exception(Response, PortalId);
             if (_hasEditAccess && _commReturn.StatusCode != "00") strOut = _commReturn.ErrorMsg;
+
+            if (IsEditable)
+            {
+                // Add the ModelLabel so we can identify the content.
+                var razorTemplateFileMapPath = LocalUtils.MapPath("/DesktopModules/CDSviewerDNN/Themes/config-w3/1.0/default/ModuleLabel.cshtml");
+                var razorTemplate = FileSystemUtils.ReadFile(razorTemplateFileMapPath);
+                var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
+                var remoteSettings = _commReturn.SettingsInfo();
+                var nbRazor = new SimplisityRazor(moduleData);
+                nbRazor.SetDataObject("remotesettings", remoteSettings);
+                var moduleLabel = LocalUtils.RazorRender(nbRazor, razorTemplate, true);
+                strOut += moduleLabel;
+            }
 
             var lit = new Literal();
             lit.Text = strOut;

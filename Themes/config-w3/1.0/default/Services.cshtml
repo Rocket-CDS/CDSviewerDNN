@@ -15,23 +15,12 @@
     <div class="w3-half">
 
         <div class="w3-bar w3-margin-bottom">
-            <span class="w3-button w3-green simplisity_click" s-cmd="services_savemoduledata" s-post="#servicessection" s-fields='{"moduleref":"@(moduleData.ModuleRef)"}' s-reload="true">
-                <span class="material-icons">
-                    save
-                </span>
-                @LocalUtils.GetLocalizeString("save", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")
-            </span>
             <span class="w3-button w3-teal " onclick="$('#servicecodepopup').show()">
                 <span class="material-icons">
                     save
                 </span>
                 @LocalUtils.GetLocalizeString("addservice", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")
             </span>
-        </div>
-
-        <div class="w3-row">
-            <label>@LocalUtils.GetLocalizeString("name", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</label>
-            @TextBox(moduleData.Info, "genxml/remote/modulename", " class='w3-input w3-border ' ", "")
         </div>
 
 
