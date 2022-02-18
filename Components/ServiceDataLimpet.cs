@@ -58,8 +58,6 @@ namespace CDSviewerDNN.Components
         public void SaveServiceCode(SimplisityInfo postInfo)
         {
             var serviceCode = postInfo.GetXmlProperty("genxml/textbox/servicecode");
-
-            // chekc if we already have it.
             var exists = false;
             foreach (var sRec in GetServices())
             {
@@ -73,13 +71,14 @@ namespace CDSviewerDNN.Components
                 sRemote.FromXmlItem(GeneralUtils.Base64Decode(serviceCode));
                 srec.SetXmlProperty("genxml/name", sRemote.GetXmlProperty("genxml/settings/systemkey") + " - " + sRemote.GetXmlProperty("genxml/settings/engineurl"));
                 srec.SetXmlProperty("genxml/config/serviceref", GeneralUtils.GetGuidKey());
-
+                
                 Record.AddRecordListItem(ServiceListName, srec);
                 ValidateAndUpdate();
             }
         }
         public bool ServiceExists(string serviceref)
         {
+            if (serviceref == "") return false;
             if (GetService(serviceref) == null) return false;
             return true;
         }

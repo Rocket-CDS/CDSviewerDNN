@@ -34,7 +34,7 @@
     <value>CDSviewerDNN.pdb</value>
     <value>Simplisity.dll</value>
     <value>RazorEngine.dll</value>
-    <value>CDScomm.dll</value>
-    <value>CDScomm.pdb</value>    
+    <value>RocketComm.dll</value>
+    <value>RocketComm.pdb</value>    
   </assembly>
 </root>

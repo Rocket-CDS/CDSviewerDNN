@@ -140,7 +140,10 @@ namespace CDSviewerDNN
                 {
                     actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("edit", this.LocalResourceFile), "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
                 }
-                actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("editnewwindow", this.LocalResourceFile), "", "", "", _moduleData.EngineUrl + "/" + _moduleData.SystemKey, false, SecurityAccessLevel.Edit, true, true);
+                else
+                {
+                    actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("editnewwindow", this.LocalResourceFile), "", "", "", _moduleData.EngineUrl + "/" + _moduleData.SystemKey, false, SecurityAccessLevel.Edit, true, true);
+                }
 
                 actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("setup", this.LocalResourceFile), "", "", "", EditUrl("Setup"), false, SecurityAccessLevel.Admin, true, false);
                 actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("services", this.LocalResourceFile), "", "", "", EditUrl("Services"), false, SecurityAccessLevel.Admin, true, false);

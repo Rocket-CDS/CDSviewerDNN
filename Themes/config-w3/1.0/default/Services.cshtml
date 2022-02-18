@@ -13,20 +13,44 @@
     <div class="w3-quarter w3-hide-small w3-hide-medium">&nbsp;</div>
 
     <div class="w3-half">
-        <div class="w3-row w3-padding">
-            <div class="w3-half">
-                <label>Service Code</label>
-            </div>
+
+        <div class="w3-bar w3-margin-bottom">
+            <span class="w3-button w3-green simplisity_click" s-cmd="services_savemoduledata" s-post="#servicessection" s-fields='{"moduleref":"@(moduleData.ModuleRef)"}' s-reload="true">
+                <span class="material-icons">
+                    save
+                </span>
+                @LocalUtils.GetLocalizeString("save", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")
+            </span>
+            <span class="w3-button w3-teal " onclick="$('#servicecodepopup').show()">
+                <span class="material-icons">
+                    save
+                </span>
+                @LocalUtils.GetLocalizeString("addservice", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")
+            </span>
         </div>
-        <div class="w3-row w3-padding">
-            <div class="w3-col m11 w3-padding">
-                @TextArea(new SimplisityInfo(), "genxml/textbox/servicecode", " class='w3-input w3-border' style='height:45px;' ")
-            </div>
-            <div class="w3-col m1 w3-padding" style="max-width:60px;">
-                <div class="w3-button w3-teal simplisity_click" s-cmd="services_savedata" s-post="#servicessection" s-fields='{"moduleref":"@(moduleData.ModuleRef)"}' s-reload="true">
-                    <span class="material-icons">
-                        save
-                    </span>
+
+        <div class="w3-row">
+            <label>@LocalUtils.GetLocalizeString("name", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</label>
+            @TextBox(moduleData.Info, "genxml/remote/modulename", " class='w3-input w3-border ' ", "")
+        </div>
+
+
+        <div id="servicecodepopup" class="w3-modal">
+            <div class="w3-modal-content">
+                <div class="w3-container">
+                    <span onclick="document.getElementById('servicecodepopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                    <div class="w3-row w3-padding w3-margin-top">
+                        <label>@LocalUtils.GetLocalizeString("servicecode", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</label>
+                        @TextArea(new SimplisityInfo(), "genxml/textbox/servicecode", " class='w3-input w3-border' style='height:260px;' ")
+                    </div>
+                    <div class="w3-row w3-center w3-padding">
+                        <div class="w3-button w3-teal simplisity_click" s-cmd="services_savedata" s-post="#servicessection" s-fields='{"moduleref":"@(moduleData.ModuleRef)"}' s-reload="true">
+                            <span class="material-icons">
+                                save
+                            </span>
+                            @LocalUtils.GetLocalizeString("save", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,6 +60,8 @@
             <table class="w3-table w3-bordered">
                 <tr>
                     <th>Service</th>
+                    <th></th>
+                    <th></th>
                     <th></th>
                 </tr>
                 @foreach (SimplisityRecord serviceRec in serviceData.GetServices())
@@ -54,10 +80,12 @@
                             </span>
                         </td>
                         <td style="vertical-align: middle;">
-                            @serviceRec.GetXmlProperty("genxml/name")
+                            <a class="w3-button" href="@(moduleData.EngineUrl)\@(moduleData.SystemKey)" target="_blank" style="text-decoration: none;">
+                                @serviceRec.GetXmlProperty("genxml/name")
+                            </a>
                         </td>
                         <td style="width:60px;">
-                            <span class="w3-button w3-right simplisity_click" s-cmd="services_delete" s-reload="true" s-fields='{"moduleref":"@(moduleData.ModuleRef)","servicecodeidx":"@(idx)"}'>
+                            <span class="w3-button w3-right simplisity_confirmclick" s-confirm="@LocalUtils.GetLocalizeString("remove", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services") ?" s-cmd="services_delete" s-reload="true" s-fields='{"moduleref":"@(moduleData.ModuleRef)","servicecodeidx":"@(idx)"}'>
                                 <span class="material-icons">
                                     remove
                                 </span>
@@ -71,9 +99,9 @@
         </div>
     </div>
 
-    <div class="w3-quarter w3-hide-small w3-hide-medium">&nbsp;</div>
+        <div class="w3-quarter w3-hide-small w3-hide-medium">&nbsp;</div>
 
-</div>
+    </div>
 <div class="w3-row w3-padding w3-tiny">
     <span>moduleref:&nbsp;@(moduleData.ModuleRef)</span>
 </div>

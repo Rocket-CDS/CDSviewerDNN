@@ -22,11 +22,12 @@
     }
 </style>
 
+<div class='w3-container w3-right'>
+    <asp:linkbutton cssclass="cancelbutton w3-button w3-blue" id="Linkbutton1" runat="server" ResourceKey="cmdReturn" causesvalidation="False" OnClick="cmdCancel_Click" />
+</div>
+
 <div id="simplisity_startpanel" class="w3-row simplisity_panel">
     <asp:PlaceHolder ID="adminpanel" runat="server"></asp:PlaceHolder>
-</div>
-<div class='w3-container w3-right w3-margin'>
-    <asp:linkbutton cssclass="cancelbutton w3-button w3-blue" id="Linkbutton1" runat="server" ResourceKey="cmdReturn" causesvalidation="False" OnClick="cmdCancel_Click" />
 </div>
 
 

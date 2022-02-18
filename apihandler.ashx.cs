@@ -74,6 +74,9 @@ namespace CDSviewerDNN
                         case "services_selectservice":
                             strOut = SelectService();
                             break;
+                        case "services_savemoduledata":
+                            strOut = SaveModuelData();
+                            break;
                         default:
                             strOut = "INVALID CMD";
                             break;
@@ -100,7 +103,7 @@ namespace CDSviewerDNN
         {
             if (LocalUtils.HasModuleAdminRights(_moduleData.ModuleId))
             {
-                    _postInfo.PortalId = PortalSettings.Current.PortalId;
+                _postInfo.PortalId = PortalSettings.Current.PortalId;
                 var serviceData = new ServiceDataLimpet(PortalSettings.Current.PortalId);
                 serviceData.SaveServiceCode(_postInfo);
                 if (serviceData.GetServices().Count == 1)
@@ -145,6 +148,16 @@ namespace CDSviewerDNN
             }
             return ""; // reload page
         }
+        private string SaveModuelData()
+        {
+            if (LocalUtils.HasModuleAdminRights(_moduleData.ModuleId))
+            {
+                _moduleData.Record.SetXmlProperty("genxml/remote/modulename", _postInfo.GetXmlProperty("genxml/remote/modulename"));
+                _moduleData.Update();
+            }
+            return ""; // reload page
+        }
+
 
         public bool IsReusable
         {

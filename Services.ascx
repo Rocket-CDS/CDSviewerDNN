@@ -6,13 +6,14 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+<div class='w3-container w3-right'>
+    <asp:linkbutton cssclass="cancelbutton w3-button w3-blue" id="cmdCancel" runat="server" ResourceKey="cmdReturn" causesvalidation="False" OnClick="cmdCancel_Click" />
+</div>
+
 <div id="simplisity_startpanel" class="w3-row simplisity_panel">
     <asp:PlaceHolder ID="adminpanelheader" runat="server"></asp:PlaceHolder>
 </div>
 
-<div class='w3-container w3-right'>
-    <asp:linkbutton cssclass="cancelbutton w3-button w3-blue" id="cmdCancel" runat="server" ResourceKey="cmdReturn" causesvalidation="False" OnClick="cmdCancel_Click" />
-</div>
 
 <style>
     #editBarContainer {

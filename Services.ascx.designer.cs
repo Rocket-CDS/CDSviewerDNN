@@ -15,15 +15,6 @@ namespace CDSviewerDNN
     {
 
         /// <summary>
-        /// adminpanelheader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder adminpanelheader;
-
-        /// <summary>
         /// cmdCancel control.
         /// </summary>
         /// <remarks>
@@ -31,5 +22,14 @@ namespace CDSviewerDNN
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdCancel;
+
+        /// <summary>
+        /// adminpanelheader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder adminpanelheader;
     }
 }
