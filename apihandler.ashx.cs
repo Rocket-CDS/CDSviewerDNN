@@ -46,7 +46,7 @@ namespace CDSviewerDNN
                 {
                     context.Response.ContentType = "text/plain";
 
-                    // Call to the CDS server.
+                    // Call to the CDS server. NO CACHE on API, it will not work correctly.
                     var comm = new CommLimpet(_moduleData.Record);
                     _commReturn = comm.CallRedirect(paramCmd, postJson, paramJson);
                     if (_commReturn.StatusCode != "00")

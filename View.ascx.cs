@@ -50,8 +50,14 @@ namespace CDSviewerDNN
                 _moduleData.CultureCode = LocalUtils.GetCurrentCulture();
 
                 // Call to the CDS server.
-                var comm = new CommLimpet(_moduleData.Record);
-                _commReturn = comm.CallRedirect("remote_publicview", "", "");
+                var cacheKey = _moduleData.GetCacheKey();
+                _commReturn = (CommData)LocalUtils.GetCache(cacheKey);
+                if (_commReturn == null || _hasEditAccess)
+                {
+                    var comm = new CommLimpet(_moduleData.Record);
+                    _commReturn = comm.CallRedirect("remote_publicview", "", "");
+                    if (cacheKey != "") LocalUtils.SetCache(cacheKey, _commReturn);
+                }
 
                 var strHeader1 = _commReturn.FirstHeader;
                 LocalUtils.IncludeTextInHeaderAt(Page, strHeader1, 1); // injected begining of header

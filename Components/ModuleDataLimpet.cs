@@ -167,6 +167,45 @@ namespace CDSviewerDNN.Components
             }
         }
 
+        /// <summary>
+        ///  Build cachekey from known values that will not create a duplicate.
+        ///  NOTE: In future this may need to be changed for new systems.
+        /// </summary>
+        /// <returns></returns>
+        public string GetCacheKey()
+        {
+            // build cacheKey.  Unique for each page.
+            var cacheKey = CultureCode;
+            cacheKey += ModuleRef;
+            cacheKey += Record.GetXmlPropertyInt("genxml/remote/pagesize");
+            cacheKey += Record.GetXmlPropertyInt("genxml/remote/urlparams/page") + "*" + Record.GetXmlPropertyInt("genxml/remote/urlparams/p");
+            cacheKey += Record.GetXmlPropertyInt("genxml/remote/urlparams/catid");
+            cacheKey += Record.GetXmlPropertyInt("genxml/remote/urlparams/id") + "*" + Record.GetXmlPropertyInt("genxml/remote/urlparams/articleid") + "*" + Record.GetXmlPropertyInt("genxml/remote/urlparams/productid");
+            cacheKey += Record.GetXmlPropertyInt("genxml/remote/orderbyref"); ;
+            // add filters
+            var nodList = Record.XMLDoc.SelectNodes("genxml/remote/*[starts-with(name(), 'checkboxfilter')]");
+            if (nodList != null && nodList.Count > 0)
+            {
+                foreach (XmlNode nod in nodList)
+                {
+                    cacheKey += nod.Name + "*" + nod.InnerText;
+                }
+            }
+            nodList = Record.XMLDoc.SelectNodes("genxml/remote/*[starts-with(name(), 'radiofilter')]");
+            if (nodList != null && nodList.Count > 0)
+            {
+                foreach (XmlNode nod in nodList)
+                {
+                    cacheKey += nod.Name + "*" + nod.InnerText;
+                }
+            }
+            // Add searchtext, so we get a different key when search used.
+            // This is not cached, but we need a different key to the cached data.
+            cacheKey += Record.GetXmlProperty("genxml/remote/searchtext");
+            return GeneralUtils.GetMd5Hash(cacheKey);
+        }
+
+
         #region "properties"
 
         public SimplisityInfo Info { get { return new SimplisityInfo(Record); } } 
