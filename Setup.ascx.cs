@@ -61,6 +61,9 @@ namespace CDSviewerDNN
             var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
             if (moduleData.Exists)
             {
+                // clear cache for edit change.
+                LocalUtils.ClearAllGroupCache(moduleData.ModuleRef);
+
                 var serviceData = new ServiceDataLimpet(PortalId);
                 if (!serviceData.ServiceExists(moduleData.ServiceRef))
                 {

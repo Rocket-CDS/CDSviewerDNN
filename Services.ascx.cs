@@ -52,6 +52,9 @@ namespace CDSviewerDNN
                     nbRazor.SetDataObject("moduledata", moduleData);
                     String razorText = LocalUtils.RazorRender(nbRazor, razorTemplate, true);
 
+                    // clear cache for edit change.
+                    LocalUtils.ClearAllGroupCache(moduleData.ModuleRef);
+
                     var lit = new Literal();
                     lit.Text = razorText;
                     adminpanelheader.Controls.Add(lit);

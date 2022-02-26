@@ -56,7 +56,7 @@ namespace CDSviewerDNN
                 {
                     var comm = new CommLimpet(_moduleData.Record);
                     _commReturn = comm.CallRedirect("remote_publicview", "", "");
-                    if (cacheKey != "") LocalUtils.SetCache(cacheKey, _commReturn);
+                    if (cacheKey != "") LocalUtils.SetCache(cacheKey, _commReturn, _moduleData.ModuleRef);
                 }
 
                 var strHeader1 = _commReturn.FirstHeader;

@@ -245,8 +245,16 @@ namespace CDSviewerDNN.Components
 
 
 
-        public static void SetCache(string cacheKey, object objObject, int keephours = 4)
+        public static void SetCache(string cacheKey, object objObject, string cacheGroup = "", int keephours = 4)
         {
+            if (cacheGroup != "")
+            {
+                cacheGroup = "cachegroup:" + cacheGroup;
+                var cgDict = (List<string>)GetCache(cacheGroup);
+                if (cgDict == null) cgDict = new List<string>();
+                cgDict.Add(cacheKey);
+                DataCache.SetCache(cacheGroup, cgDict);
+            }
             DataCache.SetCache(cacheKey, objObject, DateTime.Now + new TimeSpan(0, keephours, 0, 0));
         }
         public static object GetCache(string cacheKey)
@@ -260,6 +268,19 @@ namespace CDSviewerDNN.Components
         public static void ClearAllCache()
         {
             DataCache.ClearCache();
+        }
+        public static void ClearAllGroupCache(string cacheGroup)
+        {
+            if (cacheGroup != "")
+            {
+                cacheGroup = "cachegroup:" + cacheGroup;
+                var cgDict = (List<string>)GetCache(cacheGroup);
+                if (cgDict == null) cgDict = new List<string>();
+                foreach (var cacheKey in cgDict)
+                {
+                    DataCache.RemoveCache(cacheKey);
+                }
+            }
         }
 
 

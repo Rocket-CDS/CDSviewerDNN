@@ -69,6 +69,9 @@ namespace CDSviewerDNN
                     strOut = "No Service";
                 else
                 {
+                    // clear cache for edit change.
+                    LocalUtils.ClearAllGroupCache(moduleData.ModuleRef);
+
                     // Call to the CDS server.
                     var comm = new CommLimpet(moduleData.Record);
                     var commReturn = comm.CallRedirect("rocketapptheme_getremote", "", "");

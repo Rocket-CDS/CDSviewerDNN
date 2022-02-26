@@ -148,6 +148,8 @@
     <None Include="Docs\TechDocs.md" />
     <None Include="Installation\01.00.00.SqlDataProvider" />
     <None Include="Installation\Uninstall.SqlDataProvider" />
+    <None Include="LICENSE" />
+    <None Include="README.md" />
     <None Include="Themes\config-w3\1.0\default\ModuleLabel.cshtml" />
     <None Include="Themes\config-w3\1.0\default\Reload.cshtml" />
     <None Include="Themes\config-w3\1.0\default\Services.cshtml" />
