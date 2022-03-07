@@ -90,8 +90,8 @@
             </assembly>
             <assembly>
               <path>bin</path>
-              <name>CDScomm.dll</name>
-              <sourceFileName>CDScomm.dll</sourceFileName>
+              <name>RocketComm.dll</name>
+              <sourceFileName>RocketComm.dll</sourceFileName>
             </assembly>
           </assemblies>
 				</component>
