@@ -80,6 +80,8 @@ namespace CDSviewerDNN
                 }
                 else
                 {
+                    // Load the current language,  the sessionJson might be wrong for the page. 
+                    moduleData.CultureCode = LocalUtils.GetCurrentCulture();
                     // Call to the CDS server.
                     var comm = new CommLimpet(moduleData.Record);
                     var commReturn = comm.CallRedirect("remote_settings", "", "");
