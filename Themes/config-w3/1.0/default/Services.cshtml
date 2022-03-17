@@ -14,7 +14,44 @@
 
     <div class="w3-half">
 
+        <div class="w3-row w3-margin-bottom savenotify">
+            <div class="w3-xlarge">@LocalUtils.GetLocalizeString("notification", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</div>
+            <div class="w3-row w3-padding">
+                <label>@LocalUtils.GetLocalizeString("emailcsv", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</label>
+                @TextBox(serviceData.Info, "genxml/textbox/notifyemailcsv", "class='w3-input w3-border'", "")
+            </div>
+            <div class="w3-row">
+                <div class="w3-third w3-padding">
+                    <label>@LocalUtils.GetLocalizeString("threshold", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</label>
+                    @TextBox(serviceData.Info, "genxml/textbox/threshold", "class='w3-input w3-border'", "4")
+                </div>
+                <div class="w3-third w3-padding">
+                    <label>@LocalUtils.GetLocalizeString("errorcount", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</label>
+                    @TextBox(serviceData.Info, "genxml/textbox/errorcount", "class='w3-input w3-border' ", "0")
+                </div>
+                <div class="w3-third w3-padding">
+                    <label>@LocalUtils.GetLocalizeString("totalerrors", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</label>
+                    @TextBox(serviceData.Info, "genxml/textbox/totalerrors", "class='w3-input w3-border' disabled", "0")
+                </div>
+                <div class="w3-row w3-padding">
+                    <div class=" w3-margin-right w3-button w3-margin-top w3-right w3-teal simplisity_click" s-cmd="services_savedata" s-post="#servicessection" s-fields='{"moduleref":"@(moduleData.ModuleRef)"}' s-reload="true">
+                        <span class="material-icons">
+                            save
+                        </span>
+                        @LocalUtils.GetLocalizeString("save", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")
+                    </div>
+                    <div class="w3-margin-right w3-button w3-margin-top w3-right w3-blue simplisity_confirmclick" s-confirm="Send Test ?" s-cmd="services_sendtestnotifyemail"  s-fields='{"moduleref":"@(moduleData.ModuleRef)"}' s-reload="true">
+                        <span class="material-icons">
+                            send
+                        </span>
+                        @LocalUtils.GetLocalizeString("testemail", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="w3-bar w3-margin-bottom">
+            <div class="w3-xlarge">@LocalUtils.GetLocalizeString("dataservice", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</div>
             <span class="w3-button w3-teal " onclick="$('#servicecodepopup').show()">
                 <span class="material-icons">
                     save

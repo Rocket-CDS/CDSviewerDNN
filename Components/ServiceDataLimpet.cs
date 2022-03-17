@@ -58,23 +58,32 @@ namespace CDSviewerDNN.Components
         public void SaveServiceCode(SimplisityInfo postInfo)
         {
             var serviceCode = postInfo.GetXmlProperty("genxml/textbox/servicecode");
-            var exists = false;
-            foreach (var sRec in GetServices())
+            if (serviceCode != "")
             {
-                if (sRec.GetXmlProperty("genxml/textbox/servicecode") == serviceCode) exists = true;
+                var exists = false;
+                foreach (var sRec in GetServices())
+                {
+                    if (sRec.GetXmlProperty("genxml/textbox/servicecode") == serviceCode) exists = true;
+                }
+                if (!exists)
+                {
+                    var srec = new SimplisityRecord();
+                    srec.SetXmlProperty("genxml/textbox/servicecode", serviceCode);
+                    var sRemote = new SimplisityInfo();
+                    sRemote.FromXmlItem(GeneralUtils.Base64Decode(serviceCode));
+                    srec.SetXmlProperty("genxml/name", sRemote.GetXmlProperty("genxml/settings/systemkey") + " - " + sRemote.GetXmlProperty("genxml/settings/engineurl"));
+                    srec.SetXmlProperty("genxml/config/serviceref", GeneralUtils.GetGuidKey());
+                    Record.AddRecordListItem(ServiceListName, srec);
+                }
             }
-            if (!exists)
-            {
-                var srec = new SimplisityRecord();
-                srec.SetXmlProperty("genxml/textbox/servicecode",serviceCode);
-                var sRemote = new SimplisityInfo();
-                sRemote.FromXmlItem(GeneralUtils.Base64Decode(serviceCode));
-                srec.SetXmlProperty("genxml/name", sRemote.GetXmlProperty("genxml/settings/systemkey") + " - " + sRemote.GetXmlProperty("genxml/settings/engineurl"));
-                srec.SetXmlProperty("genxml/config/serviceref", GeneralUtils.GetGuidKey());
-                
-                Record.AddRecordListItem(ServiceListName, srec);
-                ValidateAndUpdate();
-            }
+
+            Record.SetXmlProperty("genxml/textbox/notifyemailcsv", postInfo.GetXmlProperty("genxml/textbox/notifyemailcsv"));
+            Record.SetXmlProperty("genxml/textbox/threshold", postInfo.GetXmlProperty("genxml/textbox/threshold"));
+            Record.SetXmlProperty("genxml/textbox/errorcount", postInfo.GetXmlProperty("genxml/textbox/errorcount"));
+            Record.SetXmlProperty("genxml/textbox/totalerrors", postInfo.GetXmlProperty("genxml/textbox/totalerrors"));
+
+            ValidateAndUpdate();
+
         }
         public bool ServiceExists(string serviceref)
         {
@@ -131,6 +140,11 @@ namespace CDSviewerDNN.Components
         public string SystemKey { get { return Record.GetXmlProperty("genxml/config/systemkey"); } set { Record.SetXmlProperty("genxml/config/systemkey", value); } }
         public string AppTheme { get { return Record.GetXmlProperty("genxml/config/apptheme"); } set { Record.SetXmlProperty("genxml/config/apptheme", value); } }
         public string Cmd { get { return Record.GetXmlProperty("genxml/config/cmd"); } set { Record.SetXmlProperty("genxml/config/cmd", value); } }
+
+        public string NotifyEmailCSV { get { return Record.GetXmlProperty("genxml/textbox/notifyemailcsv"); } }
+        public int NotifyThreshold { get { return Record.GetXmlPropertyInt("genxml/textbox/threshold"); } }
+        public int NotifyErrorCount { get { return Record.GetXmlPropertyInt("genxml/textbox/errorcount"); } set { Record.SetXmlProperty("genxml/textbox/errorcount", value.ToString()); } }
+        public int TotalErrors { get { return Record.GetXmlPropertyInt("genxml/textbox/totalerrors"); } set { Record.SetXmlProperty("genxml/textbox/totalerrors", value.ToString()); } }
 
         #endregion
 

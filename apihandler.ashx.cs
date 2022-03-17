@@ -74,6 +74,12 @@ namespace CDSviewerDNN
                         case "services_selectservice":
                             strOut = SelectService();
                             break;
+                        case "services_sendtestnotifyemail":
+                            var serviceData = new ServiceDataLimpet(_moduleData.PortalId);
+                            LocalUtils.SendNotifyEmail(serviceData);
+                            strOut = "";
+                            break;
+
                         default:
                             strOut = "INVALID CMD";
                             break;

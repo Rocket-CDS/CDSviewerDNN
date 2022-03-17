@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 Installation/CDSviewerDNN_1.0.6_Install.zip
 dnnpack.config
+*.zip

@@ -95,7 +95,11 @@ namespace CDSviewerDNN
                     // Call to the CDS server.
                     var comm = new CommLimpet(moduleData.Record);
                     var commReturn = comm.CallRedirect("remote_edit");
-                    strOut = commReturn.ViewHtml;
+                    if (commReturn.StatusCode != "00") commReturn = comm.CallRedirect("remote_edit", "", ""); // try again
+                    if (commReturn.StatusCode != "00")
+                        strOut = commReturn.ErrorMsg;
+                    else
+                        strOut = commReturn.ViewHtml;
                 }
 
             }

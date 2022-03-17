@@ -11,6 +11,9 @@ using DotNetNuke.Services.Exceptions;
 using Newtonsoft.Json;
 using DotNetNuke.Common.Utilities;
 using Simplisity;
+using DotNetNuke.Entities.Users;
+using System.Linq;
+using System.Text;
 
 namespace CDSviewerDNN
 {
@@ -52,11 +55,29 @@ namespace CDSviewerDNN
                 // Call to the CDS server.
                 var cacheKey = _moduleData.GetCacheKey();
                 _commReturn = (CommData)LocalUtils.GetCache(cacheKey);
-                if (_commReturn == null || _hasEditAccess)
+                if (_commReturn == null || _commReturn.StatusCode != "00" || _hasEditAccess)
                 {
+                    var serviceData = new ServiceDataLimpet(PortalId);
                     var comm = new CommLimpet(_moduleData.Record);
                     _commReturn = comm.CallRedirect("remote_publicview", "", "");
-                    if (cacheKey != "") LocalUtils.SetCache(cacheKey, _commReturn, _moduleData.ModuleRef);
+                    if (_commReturn.StatusCode != "00") _commReturn = comm.CallRedirect("remote_publicview", "", ""); // try again
+
+                    if (_commReturn.StatusCode == "00" && cacheKey != "")
+                    {
+                        serviceData.NotifyErrorCount = 0;
+                        LocalUtils.SetCache(cacheKey, _commReturn, _moduleData.ModuleRef);
+                    }
+                    if (_commReturn.StatusCode != "00")
+                    {
+                        serviceData.NotifyErrorCount += 1;
+                        serviceData.TotalErrors += 1;
+                        if (serviceData.NotifyErrorCount > serviceData.NotifyThreshold)
+                        {
+                            serviceData.NotifyErrorCount = 0;
+                            LocalUtils.SendNotifyEmail(serviceData);
+                        }
+                    }
+                    serviceData.Update();
                 }
 
                 var strHeader1 = _commReturn.FirstHeader;

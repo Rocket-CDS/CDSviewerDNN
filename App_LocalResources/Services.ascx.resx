@@ -120,8 +120,20 @@
   <data name="addservice.Text" xml:space="preserve">
     <value>Add Data Service</value>
   </data>
+  <data name="dataservice.Text" xml:space="preserve">
+    <value>Data Service</value>
+  </data>
+  <data name="emailcsv.Text" xml:space="preserve">
+    <value>Notify Email (CSV)</value>
+  </data>
+  <data name="errorcount.Text" xml:space="preserve">
+    <value>Error Count</value>
+  </data>
   <data name="name.Text" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="notification.Text" xml:space="preserve">
+    <value>Notification</value>
   </data>
   <data name="remove.Text" xml:space="preserve">
     <value>Remove</value>
@@ -134,5 +146,14 @@
   </data>
   <data name="servicecode.Text" xml:space="preserve">
     <value>Data Service Code</value>
+  </data>
+  <data name="testemail.Text" xml:space="preserve">
+    <value>Test Notify Email</value>
+  </data>
+  <data name="threshold.Text" xml:space="preserve">
+    <value>Threshold before notification</value>
+  </data>
+  <data name="totalerrors.Text" xml:space="preserve">
+    <value>Total Errors</value>
   </data>
 </root>

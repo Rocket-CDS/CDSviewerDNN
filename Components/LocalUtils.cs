@@ -282,9 +282,53 @@ namespace CDSviewerDNN.Components
                 }
             }
         }
+        public static List<UserInfo> GetUsers(int portalId, string inRole = "")
+        {
+            var rtnList = new List<UserInfo>();
+            var l = UserController.GetUsers(portalId);
+            foreach (UserInfo u in l)
+            {
+                if (inRole == "" || u.IsInRole(inRole))
+                {
+                    rtnList.Add(u);
+                }
+            }
+            return rtnList;
+        }
+        public static List<UserInfo> GetSuperUsers()
+        {
+            return GetUsers(-1, "SuperUser");
+        }
+
+        public static void SendNotifyEmail(ServiceDataLimpet serviceData)
+        {
+            var suList = LocalUtils.GetSuperUsers();
+            if (suList.Count > 0)
+            {
+                var suInfo = suList.First();
+                var emailarray = serviceData.NotifyEmailCSV.Replace(';', ',').Split(',');
+                foreach (var email in emailarray)
+                {
+                    if (!string.IsNullOrEmpty(email.Trim()) && GeneralUtils.IsEmail(suInfo.Email) && GeneralUtils.IsEmail(email.Trim()))
+                    {
+                        var emailHtml = "<h1>QWERTYU TEST</h1>";
+
+                        string[] stringarray = new string[0];
+                        DotNetNuke.Services.Mail.Mail.SendMail(
+                            suInfo.Email,
+                            email.Trim(), "", "", "",
+                            DotNetNuke.Services.Mail.MailPriority.Normal,
+                            "ERROR: CDSviewer Notification",
+                            DotNetNuke.Services.Mail.MailFormat.Html,
+                            System.Text.Encoding.UTF8,
+                            emailHtml,
+                            stringarray, "", "", "", "", false);
+                    }
+                }
+            }
 
 
-
+        }
 
     }
 }
