@@ -74,7 +74,8 @@ namespace CDSviewerDNN
                         if (serviceData.NotifyErrorCount > serviceData.NotifyThreshold)
                         {
                             serviceData.NotifyErrorCount = 0;
-                            LocalUtils.SendNotifyEmail(serviceData);
+                            _moduleData.TabId = TabId;
+                            LocalUtils.SendNotifyEmail(_moduleData, serviceData);
                         }
                     }
                     serviceData.Update();

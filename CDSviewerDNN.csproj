@@ -41,7 +41,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>_external\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RazorEngine">
+    <Reference Include="RazorEngine, Version=3.10.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>_external\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -151,6 +152,7 @@
     <None Include="LICENSE" />
     <None Include="README.md" />
     <None Include="Themes\config-w3\1.0\default\ModuleLabel.cshtml" />
+    <None Include="Themes\config-w3\1.0\default\NotifyEmail.cshtml" />
     <None Include="Themes\config-w3\1.0\default\Reload.cshtml" />
     <None Include="Themes\config-w3\1.0\default\Services.cshtml" />
     <None Include="CDSviewerDNN.dnn" />
@@ -172,6 +174,9 @@
       <Project>{6a92d0ac-faf8-42c7-8336-a69ec8286a16}</Project>
       <Name>Simplisity</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

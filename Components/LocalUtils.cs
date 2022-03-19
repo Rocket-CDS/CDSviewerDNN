@@ -299,8 +299,7 @@ namespace CDSviewerDNN.Components
         {
             return GetUsers(-1, "SuperUser");
         }
-
-        public static void SendNotifyEmail(ServiceDataLimpet serviceData)
+        public static void SendNotifyEmail(ModuleDataLimpet moduleData, ServiceDataLimpet serviceData)
         {
             var suList = LocalUtils.GetSuperUsers();
             if (suList.Count > 0)
@@ -311,7 +310,11 @@ namespace CDSviewerDNN.Components
                 {
                     if (!string.IsNullOrEmpty(email.Trim()) && GeneralUtils.IsEmail(suInfo.Email) && GeneralUtils.IsEmail(email.Trim()))
                     {
-                        var emailHtml = "<h1>QWERTYU TEST</h1>";
+                        var razorTemplateFileMapPath = LocalUtils.MapPath("/DesktopModules/CDSviewerDNN/Themes/config-w3/1.0/default/NotifyEmail.cshtml");
+                        var razorTemplate = FileSystemUtils.ReadFile(razorTemplateFileMapPath);
+                        moduleData.Record.SetXmlProperty("genxml/portalurl", PortalSettings.Current.DefaultPortalAlias);
+                        var nbRazor = new SimplisityRazor(moduleData);
+                        var emailHtml = LocalUtils.RazorRender(nbRazor, razorTemplate, true);                        
 
                         string[] stringarray = new string[0];
                         DotNetNuke.Services.Mail.Mail.SendMail(

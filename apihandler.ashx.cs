@@ -76,7 +76,8 @@ namespace CDSviewerDNN
                             break;
                         case "services_sendtestnotifyemail":
                             var serviceData = new ServiceDataLimpet(_moduleData.PortalId);
-                            LocalUtils.SendNotifyEmail(serviceData);
+                            _moduleData.TabId = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid");
+                            LocalUtils.SendNotifyEmail(_moduleData, serviceData);
                             strOut = "";
                             break;
 

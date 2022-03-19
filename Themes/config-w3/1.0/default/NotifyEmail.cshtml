@@ -1,0 +1,49 @@
+@inherits Simplisity.RazorEngineTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using CDSviewerDNN.Components
+@using DotNetNuke.Common;
+
+
+@{
+    var moduleData = (ModuleDataLimpet)Model.List.First();
+    var param = new string[0];
+}
+
+<div style="background:red;">
+    <h1>&nbsp;ERROR: CDS viewer </h1>
+</div>
+
+<div>
+    <p>
+        Communication between the CDS and CDSviewer has failed beyond the failure threshold.</br>
+        This can result in errors being displayed.  It should be corrected.</br>
+        </br>
+    </p>
+
+    <div>
+        Website URL:&nbsp;@moduleData.Record.GetXmlProperty("genxml/portalurl")
+    </div>
+    </br>
+    <div>
+        Page ID:&nbsp;@moduleData.TabId
+    </div>
+    </br>
+    <div>
+        Page URL:&nbsp;<a href="@(Globals.NavigateURL(moduleData.TabId, "", param).ToString())">@(Globals.NavigateURL(moduleData.TabId, "", param).ToString())</a>
+    </div>
+    </br>
+    <div>
+        Module Ref:&nbsp;@moduleData.ModuleRef
+    </div>
+    </br>
+    <div>
+        Engine URL:&nbsp;@moduleData.EngineUrl
+    </div>
+    </br>
+    <div>
+        SystemKey:&nbsp;@moduleData.SystemKey
+    </div>
+    </br>
+
+
+</div>

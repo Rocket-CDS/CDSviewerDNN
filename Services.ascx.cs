@@ -49,6 +49,7 @@ namespace CDSviewerDNN
                     var nbRazor = new SimplisityRazor(serviceData);
 
                     var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
+                    moduleData.TabId = TabId;
                     nbRazor.SetDataObject("moduledata", moduleData);
                     String razorText = LocalUtils.RazorRender(nbRazor, razorTemplate, true);
 

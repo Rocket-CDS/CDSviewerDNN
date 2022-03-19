@@ -40,7 +40,7 @@
                         </span>
                         @LocalUtils.GetLocalizeString("save", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")
                     </div>
-                    <div class="w3-margin-right w3-button w3-margin-top w3-right w3-blue simplisity_confirmclick" s-confirm="Send Test ?" s-cmd="services_sendtestnotifyemail"  s-fields='{"moduleref":"@(moduleData.ModuleRef)"}' s-reload="true">
+                    <div class="w3-margin-right w3-button w3-margin-top w3-right w3-blue simplisity_confirmclick" s-confirm="Send Test ?" s-cmd="services_sendtestnotifyemail"  s-fields='{"tabid":"@(moduleData.TabId)","moduleref":"@(moduleData.ModuleRef)"}' s-reload="true">
                         <span class="material-icons">
                             send
                         </span>
