@@ -117,11 +117,13 @@ namespace CDSviewerDNN
                     if (service != null)
                     {
                         _moduleData.SaveSelectedService(PortalSettings.Current.PortalId, new SimplisityInfo(service));
-                    }             
+                    }
                 }
                 // Register the data client with the CDS
                 var comm = new CommLimpet(_moduleData.Record);
                 _commReturn = comm.CallRedirect("dataclients_register", "", "", "rocketportal");
+                var base64Systems = comm.CallRedirect("dataclients_getsystems", "", "", "rocketportal");
+                return GeneralUtils.Base64Decode(base64Systems.JsonReturn);
             }
             return ""; // reload page
         }
