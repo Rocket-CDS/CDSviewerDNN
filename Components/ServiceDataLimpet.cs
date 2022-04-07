@@ -137,7 +137,6 @@ namespace CDSviewerDNN.Components
         public int PortalId { get { return Record.PortalId; } }
         public bool Exists { get { if (Record.ItemID <= 0) { return false; } else { return true; }; } }
         public string ServiceListName { get { return "servicelist"; } }
-        public string SystemKey { get { return Record.GetXmlProperty("genxml/config/systemkey"); } set { Record.SetXmlProperty("genxml/config/systemkey", value); } }
         public string AppTheme { get { return Record.GetXmlProperty("genxml/config/apptheme"); } set { Record.SetXmlProperty("genxml/config/apptheme", value); } }
         public string Cmd { get { return Record.GetXmlProperty("genxml/config/cmd"); } set { Record.SetXmlProperty("genxml/config/cmd", value); } }
 

@@ -45,11 +45,11 @@ namespace CDSviewerDNN
                     var razorTemplate = FileSystemUtils.ReadFile(razorTemplateFileMapPath);
 
                     var serviceData = new ServiceDataLimpet(PortalId);
-                    SystemKey = serviceData.SystemKey;
                     var nbRazor = new SimplisityRazor(serviceData);
 
                     var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
                     moduleData.TabId = TabId;
+                    SystemKey = moduleData.SystemKey;
                     nbRazor.SetDataObject("moduledata", moduleData);
                     String razorText = LocalUtils.RazorRender(nbRazor, razorTemplate, true);
 

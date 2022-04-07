@@ -65,6 +65,12 @@ namespace CDSviewerDNN
                 {
                     switch (paramCmd)
                     {
+                        case "services_resetmodule":
+                            strOut = DeleteModuleSettings();
+                            break;
+                        case "services_savesystemkey":
+                            strOut = SaveSystemKey();
+                            break;
                         case "services_savedata":
                             strOut = SaveService();
                             break;
@@ -103,6 +109,23 @@ namespace CDSviewerDNN
 
         }
 
+        private string DeleteModuleSettings()
+        {
+            if (LocalUtils.HasModuleAdminRights(_moduleData.ModuleId))
+            {
+                _moduleData.Delete();
+            }
+            return ""; // reload page
+        }
+        private string SaveSystemKey()
+        {
+            if (LocalUtils.HasModuleAdminRights(_moduleData.ModuleId))
+            {
+                _moduleData.SystemKey  = _paramInfo.GetXmlProperty("genxml/hidden/systemkey");
+                _moduleData.Update();
+            }
+            return ""; // reload page
+        }
         private string SaveService()
         {
             if (LocalUtils.HasModuleAdminRights(_moduleData.ModuleId))

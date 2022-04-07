@@ -94,7 +94,10 @@ namespace CDSviewerDNN.Components
                     var l = sRemote.ToDictionary();
                     foreach (var d in l)
                     {
-                        Record.SetXmlProperty("genxml/remote/" + d.Key, d.Value);
+                        if (d.Key != "systemkey") // do not save legacy systemkey [this test can be removed in future]
+                        {
+                            Record.SetXmlProperty("genxml/remote/" + d.Key, d.Value);
+                        }
                     }
                     Update();
                 }
@@ -222,7 +225,7 @@ namespace CDSviewerDNN.Components
         public bool Exists { get { if (Record.ItemID <= 0) { return false; } else { return true; }; } }
         public string CultureCode { get { return Record.GetXmlProperty("genxml/remote/culturecode"); } set { Record.SetXmlProperty("genxml/remote/culturecode", value); } }
         public string CultureCodeEdit { get { return Record.GetXmlProperty("genxml/remote/culturecodeedit"); } set { Record.SetXmlProperty("genxml/remote/culturecodeedit", value); } }
-        public string SystemKey { get { return Record.GetXmlProperty("genxml/remote/systemkey"); } }
+        public string SystemKey { get { return Record.GetXmlProperty("genxml/remote/systemkey"); } set { Record.SetXmlProperty("genxml/remote/systemkey", value); } }
         public string EngineUrl { get { return Record.GetXmlProperty("genxml/remote/engineurl"); } }
         public string ServiceRef { get { return Record.GetXmlProperty("genxml/remote/serviceref"); } set { Record.SetXmlProperty("genxml/remote/serviceref", value); } }
         public string ModuleRef { get { return RecordxRef.GUIDKey; }  }

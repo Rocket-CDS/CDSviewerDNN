@@ -15,13 +15,22 @@ namespace CDSviewerDNN
     {
 
         /// <summary>
-        /// cmdCancel control.
+        /// Linkbutton2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdCancel;
+        protected global::System.Web.UI.WebControls.LinkButton Linkbutton2;
+
+        /// <summary>
+        /// Linkbutton1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton Linkbutton1;
 
         /// <summary>
         /// adminpanel control.

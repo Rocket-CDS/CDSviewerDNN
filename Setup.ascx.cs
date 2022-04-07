@@ -73,10 +73,14 @@ namespace CDSviewerDNN
                     var razorTemplateFileMapPath = LocalUtils.MapPath("/DesktopModules/CDSviewerDNN/Themes/config-w3/1.0/default/Services.cshtml");
                     var razorTemplate = FileSystemUtils.ReadFile(razorTemplateFileMapPath);
 
-                    SystemKey = serviceData.SystemKey;
+                    SystemKey = moduleData.SystemKey;
                     var nbRazor = new SimplisityRazor(serviceData);
                     nbRazor.SetDataObject("moduledata", moduleData);
                     strOut = LocalUtils.RazorRender(nbRazor, razorTemplate, true);
+                }
+                else if(moduleData.SystemKey == "") 
+                {
+                    strOut = "Get your systemkey";
                 }
                 else
                 {
@@ -95,6 +99,22 @@ namespace CDSviewerDNN
         {
             try
             {
+                Response.Redirect(Globals.NavigateURL(), true);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessModuleLoadException(this, ex);
+            }
+        }
+        protected void cmdReset_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
+                if (moduleData.Exists)
+                {
+                    moduleData.Delete();
+                }
                 Response.Redirect(Globals.NavigateURL(), true);
             }
             catch (Exception ex)
