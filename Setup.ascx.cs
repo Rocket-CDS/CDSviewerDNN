@@ -61,6 +61,7 @@ namespace CDSviewerDNN
             var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
             if (moduleData.Exists)
             {
+                moduleData.TabId = TabId;
                 // clear cache for edit change.
                 LocalUtils.ClearAllGroupCache(moduleData.ModuleRef);
 
@@ -80,7 +81,19 @@ namespace CDSviewerDNN
                 }
                 else if(moduleData.SystemKey == "") 
                 {
-                    strOut = "Get your systemkey";
+                    // Register the data client with the CDS
+                    var comm = new CommLimpet(moduleData.Record);
+                    var xmlSystems = comm.CallRedirect("dataclients_getsystems", "", "", "rocketportal");
+                    var systemsData = new SimplisityRecord();
+                    systemsData.FromXmlItem(xmlSystems.XmlReturn);
+                    var razorTemplateFileMapPath = LocalUtils.MapPath("/DesktopModules/CDSviewerDNN/Themes/config-w3/1.0/default/systemselect.cshtml");
+                    var razorTemplate = FileSystemUtils.ReadFile(razorTemplateFileMapPath);
+
+                    var nbRazor = new SimplisityRazor(serviceData);
+                    SystemKey = moduleData.SystemKey;
+                    nbRazor.SetDataObject("moduledata", moduleData);
+                    nbRazor.SetDataObject("systemsdata", systemsData);
+                    strOut = LocalUtils.RazorRender(nbRazor, razorTemplate, true);
                 }
                 else
                 {
@@ -113,7 +126,7 @@ namespace CDSviewerDNN
                 var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
                 if (moduleData.Exists)
                 {
-                    moduleData.Delete();
+                    moduleData.Reset();
                 }
                 Response.Redirect(Globals.NavigateURL(), true);
             }

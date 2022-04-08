@@ -1,0 +1,60 @@
+@inherits Simplisity.RazorEngineTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using CDSviewerDNN.Components
+
+@{
+    var serviceData = (ServiceDataLimpet)Model.List.First();
+    var moduleData = (ModuleDataLimpet)Model.GetDataObject("moduledata");
+    var systemsData = (SimplisityRecord)Model.GetDataObject("systemsdata");    
+    var idx = 0;
+}
+
+<div id="servicessection" class="w3-container">
+
+    <div class="w3-quarter w3-hide-small w3-hide-medium">&nbsp;</div>
+
+    <div class="w3-half">
+
+        <div class="w3-container w3-padding">
+
+            <table class="w3-table w3-bordered">
+                <tr>
+                    <th>System</th>
+                    <th></th>
+                </tr>
+                @foreach (SimplisityRecord systemRec in systemsData.GetRecordList("systems"))
+                {
+                    <tr>
+                        <td style="width:60px;">
+                            <span class="w3-button w3-right simplisity_click" s-cmd="services_selectsystem" s-reload="true" s-fields='{"moduleref":"@(moduleData.ModuleRef)","systemkey":"@(systemRec.GetXmlProperty("genxml/systemkey"))"}'>
+                                @if (systemRec.GetXmlProperty("genxml/systemkey") == moduleData.SystemKey)
+                                {
+                                    <span class="material-icons w3-text-green">check_circle_outline</span>
+                                }
+                                else
+                                {
+                                    <span class="material-icons">radio_button_unchecked</span>
+                                }
+                            </span>
+                        </td>
+                        <td style="vertical-align: middle;">
+                                @systemRec.GetXmlProperty("genxml/systemname")
+                        </td>
+                    </tr>
+                    idx += 1;
+                }
+            </table>
+
+        </div>
+    </div>
+
+        <div class="w3-quarter w3-hide-small w3-hide-medium">&nbsp;</div>
+
+    </div>
+<div class="w3-row w3-padding w3-tiny">
+    <span>moduleref:&nbsp;@(moduleData.ModuleRef)</span>
+</div>
+<script>
+    $(document).ready(function () {
+    });
+</script>

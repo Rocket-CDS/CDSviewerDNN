@@ -68,7 +68,7 @@ namespace CDSviewerDNN
                         case "services_resetmodule":
                             strOut = DeleteModuleSettings();
                             break;
-                        case "services_savesystemkey":
+                        case "services_selectsystem":
                             strOut = SaveSystemKey();
                             break;
                         case "services_savedata":
@@ -113,7 +113,7 @@ namespace CDSviewerDNN
         {
             if (LocalUtils.HasModuleAdminRights(_moduleData.ModuleId))
             {
-                _moduleData.Delete();
+                _moduleData.Reset();
             }
             return ""; // reload page
         }
@@ -145,8 +145,6 @@ namespace CDSviewerDNN
                 // Register the data client with the CDS
                 var comm = new CommLimpet(_moduleData.Record);
                 _commReturn = comm.CallRedirect("dataclients_register", "", "", "rocketportal");
-                var xmlSystems = comm.CallRedirect("dataclients_getsystems", "", "", "rocketportal");
-                return xmlSystems.Body;
             }
             return ""; // reload page
         }

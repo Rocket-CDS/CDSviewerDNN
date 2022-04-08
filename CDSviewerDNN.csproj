@@ -154,6 +154,7 @@
     <None Include="Themes\config-w3\1.0\default\ModuleLabel.cshtml" />
     <None Include="Themes\config-w3\1.0\default\NotifyEmail.cshtml" />
     <None Include="Themes\config-w3\1.0\default\Reload.cshtml" />
+    <None Include="Themes\config-w3\1.0\default\SystemSelect.cshtml" />
     <None Include="Themes\config-w3\1.0\default\Services.cshtml" />
     <None Include="CDSviewerDNN.dnn" />
   </ItemGroup>

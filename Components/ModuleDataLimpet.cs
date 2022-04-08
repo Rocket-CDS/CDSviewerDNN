@@ -137,7 +137,13 @@ namespace CDSviewerDNN.Components
                 }
             }
         }
-
+        public void Reset()
+        {
+            var mr = ModuleRef;
+            Record.XMLData = "<genxml></genxml>";
+            Record.SetXmlProperty("genxml/remote/moduleref", mr); // keep moduleref to link to possible existing data.
+            Update();
+        }
         public void Delete()
         {
             var l = _objCtrl.GetList(Record.PortalId, Record.ModuleId, "XREFMOD", "","","",0,0,0,0, _tableName);
