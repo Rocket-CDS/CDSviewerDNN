@@ -41,9 +41,13 @@ namespace CDSviewerDNN
 
                 if (Page.IsPostBack == false && _doSkinRedirect == false)
                 {
+                    var lit1 = new Literal();
+                    lit1.Text = ModuleSettings();
+                    localpanel.Controls.Add(lit1);
+
                     var lit = new Literal();
                     lit.Text = EditData();
-                    adminpanel.Controls.Add(lit);
+                    adminpanel.Controls.Add(lit);                    
                 }
 
             }
@@ -53,6 +57,14 @@ namespace CDSviewerDNN
             }
         }
 
+        private string ModuleSettings()
+        {
+            var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
+            var razorTemplateFileMapPath = LocalUtils.MapPath("/DesktopModules/CDSviewerDNN/Themes/config-w3/1.0/default/ModuleSettings.cshtml");
+            var razorTemplate = FileSystemUtils.ReadFile(razorTemplateFileMapPath);
+            var nbRazor = new SimplisityRazor(moduleData);
+            return LocalUtils.RazorRender(nbRazor, razorTemplate, true);
+        }
         private string EditData()
         {
             LocalUtils.RemoveCache("editoption" + ModuleId); // flag to know if we want to display the edit option on the module menu.

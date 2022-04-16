@@ -16,6 +16,7 @@
 </div>
 
 <div id="simplisity_startpanel" class="w3-row simplisity_panel">
+    <asp:PlaceHolder ID="localpanel" runat="server"></asp:PlaceHolder>
     <asp:PlaceHolder ID="adminpanel" runat="server"></asp:PlaceHolder>
 </div>
 

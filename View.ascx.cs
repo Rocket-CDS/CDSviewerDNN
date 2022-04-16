@@ -14,6 +14,8 @@ using Simplisity;
 using DotNetNuke.Entities.Users;
 using System.Linq;
 using System.Text;
+using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 
 namespace CDSviewerDNN
 {
@@ -55,12 +57,12 @@ namespace CDSviewerDNN
                 // Call to the CDS server.
                 var cacheKey = _moduleData.GetCacheKey();
                 _commReturn = (CommData)LocalUtils.GetCache(cacheKey);
-                if (_commReturn == null || _commReturn.StatusCode != "00" || _hasEditAccess)
+                if (_commReturn == null || _commReturn.StatusCode != "00" || _hasEditAccess || _moduleData.DisableCache)
                 {
                     var serviceData = new ServiceDataLimpet(PortalId);
                     var comm = new CommLimpet(_moduleData.Record);
-                    _commReturn = comm.CallRedirect("remote_publicview", "", "");
-                    if (_commReturn.StatusCode != "00") _commReturn = comm.CallRedirect("remote_publicview", "", ""); // try again
+                    _commReturn = comm.CallRedirect("remote_publicview", "", "", "", "/Desktopmodules/CDSviewerDNN/apihandler.ashx");
+                    if (_commReturn.StatusCode != "00") _commReturn = comm.CallRedirect("remote_publicview", "", "","", "/Desktopmodules/CDSviewerDNN/apihandler.ashx"); // try again, for seperate server call fail.
 
                     if (_commReturn.StatusCode == "00" && cacheKey != "")
                     {
@@ -138,6 +140,9 @@ namespace CDSviewerDNN
                 var moduleLabel = LocalUtils.RazorRender(nbRazor, razorTemplate, true);
                 strOut += moduleLabel;
             }
+
+            // inject jQuery from DNN, to stop conflict with header.
+            if (_moduleData.InjectJQuery) JavaScript.RequestRegistration(CommonJs.jQuery);
 
             var lit = new Literal();
             lit.Text = strOut;

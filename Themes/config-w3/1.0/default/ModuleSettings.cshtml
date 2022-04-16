@@ -1,0 +1,46 @@
+@inherits Simplisity.RazorEngineTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using CDSviewerDNN.Components
+
+@{
+    var moduleData = (ModuleDataLimpet)Model.List.First();
+    var info = new SimplisityInfo(moduleData.Record);
+}
+
+<div class="w3-container w3-margin w3-padding">
+    <div class="w3-quarter w3-hide-small">&nbsp;</div>
+    <div class="w3-half w3-padding">
+
+        <label>@LocalUtils.GetLocalizeString("disablecache", "/DesktopModules/CDSviewerDNN/App_LocalResources/Edit")</label>
+        @if (moduleData.DisableCache)
+        {
+            <span class="material-icons w3-button w3-text-green simplisity_click" s-cmd="services_togglecache" s-reload="true" s-fields='{"moduleref":"@(moduleData.ModuleRef)"}'>
+                toggle_on
+            </span>
+        }
+        else
+        {
+            <span class="material-icons w3-button w3-text-red simplisity_click" s-cmd="services_togglecache" s-reload="true" s-fields='{"moduleref":"@(moduleData.ModuleRef)"}'>
+                toggle_off
+            </span>
+        }
+        <label>@LocalUtils.GetLocalizeString("injectjquery", "/DesktopModules/CDSviewerDNN/App_LocalResources/Edit")</label>
+        @if (moduleData.InjectJQuery)
+        {
+            <span class="material-icons w3-button w3-text-green simplisity_click" s-cmd="services_togglejquery" s-reload="true" s-fields='{"moduleref":"@(moduleData.ModuleRef)"}'>
+                toggle_on
+            </span>
+        }
+        else
+        {
+            <span class="material-icons w3-button w3-text-red simplisity_click" s-cmd="services_togglejquery" s-reload="true" s-fields='{"moduleref":"@(moduleData.ModuleRef)"}'>
+                toggle_off
+            </span>
+        }
+
+
+    </div>
+    <div class="w3-quarter w3-hide-small">&nbsp;</div>
+
+</div>
+

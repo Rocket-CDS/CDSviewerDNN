@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="disablecache.Text" xml:space="preserve">
+    <value>Disable Cache</value>
+  </data>
+  <data name="injectjquery.Text" xml:space="preserve">
+    <value>Inject jQuery</value>
+  </data>
   <data name="selectapptheme.Text" xml:space="preserve">
     <value>Select AppTheme</value>
   </data>

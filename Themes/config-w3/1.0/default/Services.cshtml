@@ -6,6 +6,7 @@
     var serviceData = (ServiceDataLimpet)Model.List.First();
     var moduleData = (ModuleDataLimpet)Model.GetDataObject("moduledata");
     var idx = 0;
+    var resxFile = "/DesktopModules/CDSviewerDNN/App_LocalResources/Services";
 }
 
 <div id="servicessection" class="w3-container">
@@ -15,22 +16,22 @@
     <div class="w3-half">
 
         <div class="w3-row w3-margin-bottom savenotify">
-            <div class="w3-xlarge">@LocalUtils.GetLocalizeString("notification", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</div>
+            <div class="w3-xlarge">@LocalUtils.GetLocalizeString("notification", resxFile)</div>
             <div class="w3-row w3-padding">
-                <label>@LocalUtils.GetLocalizeString("emailcsv", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</label>
+                <label>@LocalUtils.GetLocalizeString("emailcsv", resxFile)</label>
                 @TextBox(serviceData.Info, "genxml/textbox/notifyemailcsv", "class='w3-input w3-border'", "")
             </div>
             <div class="w3-row">
                 <div class="w3-third w3-padding">
-                    <label>@LocalUtils.GetLocalizeString("threshold", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</label>
+                    <label>@LocalUtils.GetLocalizeString("threshold", resxFile)</label>
                     @TextBox(serviceData.Info, "genxml/textbox/threshold", "class='w3-input w3-border'", "4")
                 </div>
                 <div class="w3-third w3-padding">
-                    <label>@LocalUtils.GetLocalizeString("errorcount", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</label>
+                    <label>@LocalUtils.GetLocalizeString("errorcount", resxFile)</label>
                     @TextBox(serviceData.Info, "genxml/textbox/errorcount", "class='w3-input w3-border' ", "0")
                 </div>
                 <div class="w3-third w3-padding">
-                    <label>@LocalUtils.GetLocalizeString("totalerrors", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</label>
+                    <label>@LocalUtils.GetLocalizeString("totalerrors", resxFile)</label>
                     @TextBox(serviceData.Info, "genxml/textbox/totalerrors", "class='w3-input w3-border' disabled", "0")
                 </div>
                 <div class="w3-row w3-padding">
@@ -38,25 +39,25 @@
                         <span class="material-icons">
                             save
                         </span>
-                        @LocalUtils.GetLocalizeString("save", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")
+                        @LocalUtils.GetLocalizeString("save", resxFile)
                     </div>
                     <div class="w3-margin-right w3-button w3-margin-top w3-right w3-blue simplisity_confirmclick" s-confirm="Send Test ?" s-cmd="services_sendtestnotifyemail"  s-fields='{"tabid":"@(moduleData.TabId)","moduleref":"@(moduleData.ModuleRef)"}' s-reload="true">
                         <span class="material-icons">
                             send
                         </span>
-                        @LocalUtils.GetLocalizeString("testemail", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")
+                        @LocalUtils.GetLocalizeString("testemail", resxFile)
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="w3-bar w3-margin-bottom">
-            <div class="w3-xlarge">@LocalUtils.GetLocalizeString("dataservice", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</div>
+            <div class="w3-xlarge">@LocalUtils.GetLocalizeString("dataservice", resxFile)</div>
             <span class="w3-button w3-teal " onclick="$('#servicecodepopup').show()">
                 <span class="material-icons">
                     save
                 </span>
-                @LocalUtils.GetLocalizeString("addservice", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")
+                @LocalUtils.GetLocalizeString("addservice", resxFile)
             </span>
         </div>
 
@@ -66,7 +67,7 @@
                 <div class="w3-container">
                     <span onclick="document.getElementById('servicecodepopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
                     <div class="w3-row w3-padding w3-margin-top">
-                        <label>@LocalUtils.GetLocalizeString("servicecode", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")</label>
+                        <label>@LocalUtils.GetLocalizeString("servicecode", resxFile)</label>
                         @TextArea(new SimplisityInfo(), "genxml/textbox/servicecode", " class='w3-input w3-border' style='height:260px;' ")
                     </div>
                     <div class="w3-row w3-center w3-padding">
@@ -74,7 +75,7 @@
                             <span class="material-icons">
                                 save
                             </span>
-                            @LocalUtils.GetLocalizeString("save", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services")
+                            @LocalUtils.GetLocalizeString("save", resxFile)
                         </div>
                     </div>
                 </div>
@@ -111,7 +112,7 @@
                             </a>
                         </td>
                         <td style="width:60px;">
-                            <span class="w3-button w3-right simplisity_confirmclick" s-confirm="@LocalUtils.GetLocalizeString("remove", "/DesktopModules/CDSviewerDNN/App_LocalResources/Services") ?" s-cmd="services_delete" s-reload="true" s-fields='{"moduleref":"@(moduleData.ModuleRef)","servicecodeidx":"@(idx)"}'>
+                            <span class="w3-button w3-right simplisity_confirmclick" s-confirm="@LocalUtils.GetLocalizeString("remove", resxFile) ?" s-cmd="services_delete" s-reload="true" s-fields='{"moduleref":"@(moduleData.ModuleRef)","servicecodeidx":"@(idx)"}'>
                                 <span class="material-icons">
                                     remove
                                 </span>

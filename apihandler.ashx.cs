@@ -48,7 +48,7 @@ namespace CDSviewerDNN
 
                     // Call to the CDS server. NO CACHE on API, it will not work correctly.
                     var comm = new CommLimpet(_moduleData.Record);
-                    _commReturn = comm.CallRedirect(paramCmd, postJson, paramJson);
+                    _commReturn = comm.CallRedirect(paramCmd, postJson, paramJson, "", "/Desktopmodules/CDSviewerDNN/apihandler.ashx");
                     if (_commReturn.StatusCode != "00")
                     {
                         var sRazor = new SimplisityRazor();
@@ -86,6 +86,21 @@ namespace CDSviewerDNN
                             LocalUtils.SendNotifyEmail(_moduleData, serviceData);
                             strOut = "";
                             break;
+                        case "services_togglecache":
+                            if (_moduleData.DisableCache)
+                                _moduleData.DisableCache = false;
+                            else
+                                _moduleData.DisableCache = true;
+                            _moduleData.Update();
+                            break;
+                        case "services_togglejquery":
+                            if (_moduleData.InjectJQuery)
+                                _moduleData.InjectJQuery = false;
+                            else
+                                _moduleData.InjectJQuery = true;
+                            _moduleData.Update();
+                            break;
+
 
                         default:
                             strOut = "INVALID CMD";

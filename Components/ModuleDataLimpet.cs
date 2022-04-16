@@ -190,7 +190,7 @@ namespace CDSviewerDNN.Components
             cacheKey += Record.GetXmlPropertyInt("genxml/remote/urlparams/page") + "*" + Record.GetXmlPropertyInt("genxml/remote/urlparams/p");
             cacheKey += Record.GetXmlPropertyInt("genxml/remote/urlparams/catid");
             cacheKey += Record.GetXmlPropertyInt("genxml/remote/urlparams/id") + "*" + Record.GetXmlPropertyInt("genxml/remote/urlparams/articleid") + "*" + Record.GetXmlPropertyInt("genxml/remote/urlparams/productid");
-            cacheKey += Record.GetXmlPropertyInt("genxml/remote/orderbyref"); ;
+            cacheKey += Record.GetXmlProperty("genxml/remote/orderbyref"); ;
             // add filters
             var nodList = Record.XMLDoc.SelectNodes("genxml/remote/*[starts-with(name(), 'checkboxfilter')]");
             if (nodList != null && nodList.Count > 0)
@@ -235,6 +235,10 @@ namespace CDSviewerDNN.Components
         public string EngineUrl { get { return Record.GetXmlProperty("genxml/remote/engineurl"); } }
         public string ServiceRef { get { return Record.GetXmlProperty("genxml/remote/serviceref"); } set { Record.SetXmlProperty("genxml/remote/serviceref", value); } }
         public string ModuleRef { get { return RecordxRef.GUIDKey; }  }
+        public string LocalAPI { get { return Record.GetXmlProperty("genxml/remote/apiurl"); } }
+        public bool InjectJQuery { get { return Record.GetXmlPropertyBool("genxml/remote/injectjquery"); } set { Record.SetXmlProperty("genxml/remote/injectjquery", value.ToString()); } }
+        public bool DisableCache { get { return Record.GetXmlPropertyBool("genxml/remote/disablecache"); } set { Record.SetXmlProperty("genxml/remote/disablecache", value.ToString()); } }
+
         #endregion
 
     }

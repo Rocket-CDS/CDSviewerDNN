@@ -151,6 +151,7 @@
     <None Include="Installation\Uninstall.SqlDataProvider" />
     <None Include="LICENSE" />
     <None Include="README.md" />
+    <None Include="Themes\config-w3\1.0\default\ModuleSettings.cshtml" />
     <None Include="Themes\config-w3\1.0\default\ModuleLabel.cshtml" />
     <None Include="Themes\config-w3\1.0\default\NotifyEmail.cshtml" />
     <None Include="Themes\config-w3\1.0\default\Reload.cshtml" />
