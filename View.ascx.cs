@@ -192,7 +192,7 @@ namespace CDSviewerDNN
                 }
                 else
                 {
-                    actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("editnewwindow", this.LocalResourceFile), "", "", "", _moduleData.EngineUrl + "/" + _moduleData.SystemKey, false, SecurityAccessLevel.Edit, true, true);
+                    actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("editnewwindow", this.LocalResourceFile), "", "", "", _moduleData.EngineUrl + "/SysAdmin/" + _moduleData.SystemKey, false, SecurityAccessLevel.Edit, true, true);
                 }
 
                 actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("setup", this.LocalResourceFile), "", "", "", EditUrl("Setup"), false, SecurityAccessLevel.Admin, true, false);
