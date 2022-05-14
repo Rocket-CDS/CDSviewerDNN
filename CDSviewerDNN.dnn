@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="CDSviewer" type="Module" version="1.0.7">
+		<package name="CDSviewer" type="Module" version="1.0.8">
 			<friendlyName>CDSviewer</friendlyName>
 			<description>CDSviewer</description>
 			<iconFile />
