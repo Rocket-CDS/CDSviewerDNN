@@ -165,34 +165,37 @@ namespace CDSviewerDNN
             {
                 var actions = new ModuleActionCollection();
 
-                var editoption = (string)LocalUtils.GetCache("editoption" + ModuleId);
-                if (editoption == null)
+                if (_moduleData.ServiceRef != "")
                 {
-                    // Call to the CDS server.
-                    var comm = new CommLimpet(_moduleData.Record);
-                    var commOptReturn = comm.CallRedirect("remote_editoption", "", "");
-                    editoption = commOptReturn.ViewHtml;
-                    LocalUtils.SetCache("editoption" + ModuleId, editoption);
-                }
-                Boolean parsedValue;
-                Boolean optionValue;
-                if (Boolean.TryParse(editoption, out parsedValue))
-                {
-                    if (parsedValue)
-                        optionValue = true;
+                    var editoption = (string)LocalUtils.GetCache("editoption" + ModuleId);
+                    if (editoption == null)
+                    {
+                        // Call to the CDS server.
+                        var comm = new CommLimpet(_moduleData.Record);
+                        var commOptReturn = comm.CallRedirect("remote_editoption", "", "");
+                        editoption = commOptReturn.ViewHtml;
+                        LocalUtils.SetCache("editoption" + ModuleId, editoption);
+                    }
+                    Boolean parsedValue;
+                    Boolean optionValue;
+                    if (Boolean.TryParse(editoption, out parsedValue))
+                    {
+                        if (parsedValue)
+                            optionValue = true;
+                        else
+                            optionValue = false;
+                    }
                     else
                         optionValue = false;
-                }
-                else
-                    optionValue = false;
 
-                if (optionValue)
-                {
-                    actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("edit", this.LocalResourceFile), "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
-                }
-                else
-                {
-                    actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("editnewwindow", this.LocalResourceFile), "", "", "", _moduleData.EngineUrl + "/SysAdmin/" + _moduleData.SystemKey, false, SecurityAccessLevel.Edit, true, true);
+                    if (optionValue)
+                    {
+                        actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("edit", this.LocalResourceFile), "", "", "", EditUrl(), false, SecurityAccessLevel.Edit, true, false);
+                    }
+                    else
+                    {
+                        actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("editnewwindow", this.LocalResourceFile), "", "", "", _moduleData.EngineUrl + "/SysAdmin/" + _moduleData.SystemKey, false, SecurityAccessLevel.Edit, true, true);
+                    }
                 }
 
                 actions.Add(GetNextActionID(), LocalUtils.GetLocalizeString("setup", this.LocalResourceFile), "", "", "", EditUrl("Setup"), false, SecurityAccessLevel.Admin, true, false);

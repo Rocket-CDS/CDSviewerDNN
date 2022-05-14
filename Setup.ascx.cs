@@ -78,6 +78,16 @@ namespace CDSviewerDNN
                 LocalUtils.ClearAllGroupCache(moduleData.ModuleRef);
 
                 var serviceData = new ServiceDataLimpet(PortalId);
+
+                if (serviceData.GetServices().Count == 1)
+                {
+                    if (LocalUtils.HasModuleAdminRights(moduleData.ModuleId))
+                    {
+                        moduleData.ServiceRef = serviceData.GetService(0).GetXmlProperty("genxml/config/serviceref");
+                        moduleData.Update();
+                    }
+                }
+
                 if (!serviceData.ServiceExists(moduleData.ServiceRef))
                 {
                     moduleData.ServiceRef = "";
@@ -116,6 +126,7 @@ namespace CDSviewerDNN
                     var commReturn = comm.CallRedirect("remote_settings", "", "");
                     strOut = commReturn.ViewHtml;
                 }
+
             }
             return strOut;
         }

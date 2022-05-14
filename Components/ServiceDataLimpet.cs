@@ -8,6 +8,7 @@ using System.Xml;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using CDSviewerDNN;
+using DotNetNuke.Entities.Portals;
 
 namespace CDSviewerDNN.Components
 {
@@ -47,6 +48,28 @@ namespace CDSviewerDNN.Components
                 Record = rec;
             else
                 Record.ItemID = -1; // flags does not exist yet.
+
+            var portalcode = FileUtils.ReadFile(PortalSettings.Current.HomeDirectoryMapPath.TrimEnd('\\') + "\\DNNrocket\\portalcode");
+            if (portalcode != "") AddServiceCode(portalcode);            
+        }
+        private void AddServiceCode(string serviceCode)
+        {
+            var servicesList = GetServices();
+            var exists = false;
+            foreach (var sRec in servicesList)
+            {
+                if (sRec.GetXmlProperty("genxml/textbox/servicecode") == serviceCode) exists = true;
+            }
+            if (!exists)
+            {
+                var srec = new SimplisityRecord();
+                srec.SetXmlProperty("genxml/textbox/servicecode", serviceCode);
+                var sRemote = new SimplisityInfo();
+                sRemote.FromXmlItem(GeneralUtils.Base64Decode(serviceCode));
+                srec.SetXmlProperty("genxml/name", sRemote.GetXmlProperty("genxml/settings/systemkey") + " - " + sRemote.GetXmlProperty("genxml/settings/engineurl"));
+                srec.SetXmlProperty("genxml/config/serviceref", GeneralUtils.GetGuidKey());
+                Record.AddRecordListItem(ServiceListName, srec);
+            }
         }
         public void Delete()
         {
@@ -58,24 +81,7 @@ namespace CDSviewerDNN.Components
         public void SaveServiceCode(SimplisityInfo postInfo)
         {
             var serviceCode = postInfo.GetXmlProperty("genxml/textbox/servicecode");
-            if (serviceCode != "")
-            {
-                var exists = false;
-                foreach (var sRec in GetServices())
-                {
-                    if (sRec.GetXmlProperty("genxml/textbox/servicecode") == serviceCode) exists = true;
-                }
-                if (!exists)
-                {
-                    var srec = new SimplisityRecord();
-                    srec.SetXmlProperty("genxml/textbox/servicecode", serviceCode);
-                    var sRemote = new SimplisityInfo();
-                    sRemote.FromXmlItem(GeneralUtils.Base64Decode(serviceCode));
-                    srec.SetXmlProperty("genxml/name", sRemote.GetXmlProperty("genxml/settings/systemkey") + " - " + sRemote.GetXmlProperty("genxml/settings/engineurl"));
-                    srec.SetXmlProperty("genxml/config/serviceref", GeneralUtils.GetGuidKey());
-                    Record.AddRecordListItem(ServiceListName, srec);
-                }
-            }
+            if (serviceCode != "") AddServiceCode(serviceCode);
 
             Record.SetXmlProperty("genxml/textbox/notifyemailcsv", postInfo.GetXmlProperty("genxml/textbox/notifyemailcsv"));
             Record.SetXmlProperty("genxml/textbox/threshold", postInfo.GetXmlProperty("genxml/textbox/threshold"));
