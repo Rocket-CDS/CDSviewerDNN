@@ -29,8 +29,11 @@ namespace CDSviewerDNN.Components
         {
             _objCtrl = new CDSviewerController(); // Database controller.
             RecordxRef = _objCtrl.GetRecordByGuidKey(portalId, -1, "XREFMOD", moduleRef, "", _tableName); // get existing record.
-            _guidKey = "Module" + portalId + "*" + RecordxRef.ModuleId;
-            Record = _objCtrl.GetRecordByGuidKey(portalId, RecordxRef.ModuleId, _entityTypeCode, _guidKey, "", _tableName); // get existing record.
+            var moduleId = -1;
+            if (RecordxRef != null) moduleId = RecordxRef.ModuleId;
+            _guidKey = "Module" + portalId + "*" + moduleId;
+            Record = _objCtrl.GetRecordByGuidKey(portalId, moduleId, _entityTypeCode, _guidKey, "", _tableName); // get existing record.
+            if (Record == null) Record = new SimplisityRecord();
         }
         /// <summary>
         /// Load/Create DNN module communication data.
