@@ -49,6 +49,13 @@ namespace CDSviewerDNN
 
                     var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
                     moduleData.TabId = TabId;
+                    if (serviceData.GetService(0) != null && moduleData.SystemKey == "") // default to first in list.
+                    {
+                        moduleData.ServiceRef = serviceData.GetService(0).GetXmlProperty("genxml/config/serviceref");
+                        var serviceCode = serviceData.GetService(0).GetXmlProperty("genxml/textbox/servicecode");
+                        moduleData.LoadServiceSecurityCode(serviceCode);
+                    }
+                    moduleData.Update();
                     SystemKey = moduleData.SystemKey;
                     nbRazor.SetDataObject("moduledata", moduleData);
                     String razorText = LocalUtils.RazorRender(nbRazor, razorTemplate, true);
