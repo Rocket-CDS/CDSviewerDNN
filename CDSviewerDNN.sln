@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31829.152
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CDSviewerDNN", "CDSviewerDNN.csproj", "{1E1DB414-AF24-4936-AE8E-8F8009CAD196}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketComm", "..\DNNrocket\RocketClient\NetStandard\RocketComm.csproj", "{440CA746-6E70-4D27-B599-DB8B25311AA3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simplisity", "..\DNNrocket\Simplisity\Simplisity.csproj", "{6A92D0AC-FAF8-42C7-8336-A69EC8286A16}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1E37E77F-1561-461C-B19D-58675CDA0B85}"
+	ProjectSection(SolutionItems) = preProject
+		..\dnnpack.config = ..\dnnpack.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

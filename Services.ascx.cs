@@ -49,11 +49,14 @@ namespace CDSviewerDNN
 
                     var moduleData = new ModuleDataLimpet(PortalId, ModuleId);
                     moduleData.TabId = TabId;
-                    if (serviceData.GetService(0) != null && moduleData.ServiceRef == "") // default to first in list.
+
+                    if (LocalUtils.HasModuleAdminRights(moduleData.ModuleId))
                     {
-                        moduleData.ServiceRef = serviceData.GetService(0).GetXmlProperty("genxml/config/serviceref");
-                        var serviceCode = serviceData.GetService(0).GetXmlProperty("genxml/textbox/servicecode");
-                        moduleData.LoadServiceSecurityCode(serviceCode);
+                        if (serviceData.GetService(0) != null && (moduleData.ServiceRef == "" || moduleData.EngineUrl == "")) // default to first in list.
+                        {
+                            moduleData.LoadServiceSecurityCode(serviceData.GetService(0).GetXmlProperty("genxml/textbox/servicecode"));
+                            moduleData.ServiceRef = serviceData.GetService(0).GetXmlProperty("genxml/config/serviceref");
+                        }
                     }
                     moduleData.Update();
                     SystemKey = moduleData.SystemKey;

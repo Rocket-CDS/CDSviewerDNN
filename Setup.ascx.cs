@@ -79,10 +79,11 @@ namespace CDSviewerDNN
 
                 var serviceData = new ServiceDataLimpet(PortalId);
 
-                if (serviceData.GetServices().Count == 1)
+                if (LocalUtils.HasModuleAdminRights(moduleData.ModuleId))
                 {
-                    if (LocalUtils.HasModuleAdminRights(moduleData.ModuleId))
+                    if (serviceData.GetService(0) != null && (moduleData.ServiceRef == "" || moduleData.EngineUrl == "")) // default to first in list.
                     {
+                        moduleData.LoadServiceSecurityCode(serviceData.GetService(0).GetXmlProperty("genxml/textbox/servicecode"));
                         moduleData.ServiceRef = serviceData.GetService(0).GetXmlProperty("genxml/config/serviceref");
                         moduleData.Update();
                     }
