@@ -211,6 +211,17 @@ namespace CDSviewerDNN.Components
                     cacheKey += nod.Name + "*" + nod.InnerText;
                 }
             }
+            // Add any datakeys added for caching
+            var nodListc = Record.XMLDoc.SelectNodes("genxml/remote/*[starts-with(name(), 'cachekey-')]");
+            if (nodListc != null && nodListc.Count > 0)
+            {
+                foreach (XmlNode nod in nodListc)
+                {
+                    cacheKey += nod.Name + "*" + nod.InnerText;
+                }
+            }
+
+
             // Add searchtext, so we get a different key when search used.
             // This is not cached, but we need a different key to the cached data.
             cacheKey += Record.GetXmlProperty("genxml/remote/searchtext");
