@@ -118,7 +118,7 @@ namespace CDSviewerDNN
         {
             var basePage = (DotNetNuke.Framework.CDefault)this.Page;
             var metaSEO = _commReturn.SeoHeader();
-            if (metaSEO.Title != "") basePage.Title = metaSEO.Title;
+            if (!String.IsNullOrWhiteSpace(metaSEO.Title)) basePage.Title = metaSEO.Title;
             if (!String.IsNullOrWhiteSpace(metaSEO.Description)) basePage.MetaDescription = metaSEO.Description;
             if (!String.IsNullOrWhiteSpace(metaSEO.KeyWords)) basePage.MetaKeywords = metaSEO.KeyWords;
         }
